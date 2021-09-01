@@ -117,31 +117,79 @@ def depthFirstSearch(problem):
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
-    startState = problem.getStartState()    # Returns a tuple for the starting position
-    visitedNodes =[]
+    #to be explored (FIFO)
     frontier = util.Queue()
-    frontier.push([startState,[]])          # frontier[i] <- [(x,y), action_path taken so far till this node]
+    
+    #previously expanded states (for cycle checking), holds states
+    exploredNodes = []
+    
+    startState = problem.getStartState()
+    startNode = (startState, [], 0) #(state, action, cost)
+    
+    frontier.push(startNode)
+    
+    while not frontier.isEmpty():
+        #begin exploring first (earliest-pushed) node on frontier
+        currentState, actions, currentCost = frontier.pop()
+        
+        if currentState not in exploredNodes:
+            #put popped node state into explored list
+            exploredNodes.append(currentState)
+
+            if problem.isGoalState(currentState):
+                return actions
+            else:
+                #list of (successor, action, stepCost)
+                successors = problem.getSuccessors(currentState)
+                
+                for succState, succAction, succCost in successors:
+                    newAction = actions + [succAction]
+                    newCost = currentCost + succCost
+                    newNode = (succState, newAction, newCost)
+
+                    frontier.push(newNode)
+
+    return actions
+
+    "*** YOUR CODE HERE ***" 
+    # util.raiseNotDefined()
+
+def uniformCostSearch(problem):
+    """Search the node of least total cost first."""
+    startState = problem.getStartState()    # Returns a tuple for the starting position
+    visitedNodes = {}
+    frontier = util.PriorityQueue()
+    frontier.push([startState, [], 0], 0)   # frontier.push(item, priority)
+                                            # item: [state, actions, cost] 
 
     while not frontier.isEmpty():
         # print(problem._visitedlist)
-        curr_state, action_path = frontier.pop()
-        
-        if curr_state not in visitedNodes:
-            visitedNodes.append(curr_state)
+        curr_state, action_path, curr_cost = frontier.pop()
+
+        if(curr_state not in visitedNodes.keys() or curr_cost<visitedNodes[curr_state]):
+            visitedNodes[curr_state] = curr_cost
 
             if problem.isGoalState(curr_state):
-                # print(action_path)
+                # print(action_path)    
+                # print(visitedNodes)            
                 return action_path
             else:
                 for nbr_info in problem.getSuccessors(curr_state):      
                     ### GetSeccessors returns (nextState, direction to nextState, cost)
-                    frontier.push([nbr_info[0], action_path+[nbr_info[1]]])
+                    frontier.update([nbr_info[0], action_path+[nbr_info[1]], curr_cost+nbr_info[2]], curr_cost+nbr_info[2])
+    return action_path
+    "*** YOUR CODE HERE ***"
+    # util.raiseNotDefined() 
 
-    "*** YOUR CODE HERE ***" 
-    util.raiseNotDefined()
+def nullHeuristic(state, problem=None):
+    """
+    A heuristic function estimates the cost from the current state to the nearest
+    goal in the provided SearchProblem.  This heuristic is trivial.
+    """
+    return 0
 
-def uniformCostSearch(problem):
-    """Search the node of least total cost first."""
+def aStarSearch(problem, heuristic=nullHeuristic):
+    """Search the node that has the lowest combined cost and heuristic first."""
     startState = problem.getStartState()    # Returns a tuple for the starting position
     visitedNodes = {}
     frontier = util.PriorityQueue()
@@ -163,19 +211,7 @@ def uniformCostSearch(problem):
                 if(nbr_info[0] not in visitedNodes.keys() or visitedNodes[nbr_info[0]] > curr_cost + nbr_info[2]):            
                     visitedNodes[nbr_info[0]] = curr_cost + nbr_info[2]
                     frontier.update([nbr_info[0], action_path+[nbr_info[1]], curr_cost+nbr_info[2]], nbr_info[2])
-                    
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
 
-def nullHeuristic(state, problem=None):
-    """
-    A heuristic function estimates the cost from the current state to the nearest
-    goal in the provided SearchProblem.  This heuristic is trivial.
-    """
-    return 0
-
-def aStarSearch(problem, heuristic=nullHeuristic):
-    """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
     util.raiseNotDefined()
 
