@@ -176,7 +176,7 @@ class PriorityQueue:
     """
     def  __init__(self):
         self.heap = []
-        self.count = 0
+        self.count = 0  # number of items in it
 
     def push(self, item, priority):
         entry = (priority, self.count, item)
