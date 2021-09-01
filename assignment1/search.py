@@ -84,15 +84,43 @@ def depthFirstSearch(problem):
 
     
     """
-    print("Start:", problem.getStartState())
-    print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
-    print("Start's successors:", problem.getSuccessors(problem.getStartState()))
-    print(problem.__dict__)
+    ### HELPERS
+    # print("Start:", problem.getStartState())
+    # print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
+    # print("Start's successors:", problem.getSuccessors(problem.getStartState()))
+    # print(problem.__dict__)
 
     startState = problem.getStartState()    # Returns a tuple for the starting position
     visitedNodes =[]
     frontier = util.Stack()
-    frontier.push([startState,[]])          # frontier[i] <- [(x,y), actions]
+    frontier.push([startState,[]])          # frontier[i] <- [(x,y), action_path taken so far till this node]
+
+    while not frontier.isEmpty():
+        # print(problem._visitedlist)
+        curr_state, action_path = frontier.pop()
+        
+        # After popping, if not yet visited, add to visitedNodes
+        if curr_state not in visitedNodes:
+            visitedNodes.append(curr_state)
+
+            if problem.isGoalState(curr_state):
+                # print(action_path)
+                return action_path
+            else:
+                for nbr_info in problem.getSuccessors(curr_state):      
+                    ### GetSeccessors returns (nextState, direction to nextState, cost)
+                    frontier.push([nbr_info[0], action_path+[nbr_info[1]]])
+    
+    "*** YOUR CODE HERE ***"
+    # util.raiseNotDefined()
+
+
+def breadthFirstSearch(problem):
+    """Search the shallowest nodes in the search tree first."""
+    startState = problem.getStartState()    # Returns a tuple for the starting position
+    visitedNodes =[]
+    frontier = util.Queue()
+    frontier.push([startState,[]])          # frontier[i] <- [(x,y), action_path taken so far till this node]
 
     while not frontier.isEmpty():
         # print(problem._visitedlist)
@@ -102,26 +130,40 @@ def depthFirstSearch(problem):
             visitedNodes.append(curr_state)
 
             if problem.isGoalState(curr_state):
+                # print(action_path)
                 return action_path
             else:
                 for nbr_info in problem.getSuccessors(curr_state):      
                     ### GetSeccessors returns (nextState, direction to nextState, cost)
                     frontier.push([nbr_info[0], action_path+[nbr_info[1]]])
-    
-    
-    "*** YOUR CODE HERE ***"
-    
 
-    # util.raiseNotDefined()
-
-
-def breadthFirstSearch(problem):
-    """Search the shallowest nodes in the search tree first."""
-    "*** YOUR CODE HERE ***"
+    "*** YOUR CODE HERE ***" 
     util.raiseNotDefined()
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
+    startState = problem.getStartState()    # Returns a tuple for the starting position
+    visitedNodes = {}
+    frontier = util.PriorityQueue()
+    frontier.push([startState, [], 0], 0)   # frontier.push(item, priority)
+                                            # item: [state, actions, cost] 
+
+    while not frontier.isEmpty():
+        # print(problem._visitedlist)
+        curr_state, action_path, curr_cost = frontier.pop()
+        visitedNodes[curr_state] = curr_cost
+
+        if problem.isGoalState(curr_state):
+            # print(action_path)    
+            print(visitedNodes)            
+            return action_path
+        else:
+            for nbr_info in problem.getSuccessors(curr_state):      
+                ### GetSeccessors returns (nextState, direction to nextState, cost)
+                if(nbr_info[0] not in visitedNodes.keys() or visitedNodes[nbr_info[0]] > curr_cost + nbr_info[2]):            
+                    visitedNodes[nbr_info[0]] = curr_cost + nbr_info[2]
+                    frontier.update([nbr_info[0], action_path+[nbr_info[1]], curr_cost+nbr_info[2]], nbr_info[2])
+                    
     "*** YOUR CODE HERE ***"
     util.raiseNotDefined()
 
