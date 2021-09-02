@@ -166,7 +166,7 @@ def uniformCostSearch(problem):
         # print(problem._visitedlist)
         curr_state, action_path, curr_cost = frontier.pop()
 
-        if(curr_state not in visitedNodes.keys() or curr_cost<visitedNodes[curr_state]):
+        if(curr_state not in visitedNodes.keys() or curr_cost < visitedNodes[curr_state]):
             visitedNodes[curr_state] = curr_cost
 
             if problem.isGoalState(curr_state):
@@ -191,7 +191,7 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     startState = problem.getStartState()    # Returns a tuple for the starting position
-    visitedNodes = {}
+    visitedNodes = {}                       # {current state: current cost}
     frontier = util.PriorityQueue()
     frontier.push([startState, [], 0], 0)   # frontier.push(item, priority)
                                             # item: [state, actions, cost] 
@@ -201,19 +201,23 @@ def aStarSearch(problem, heuristic=nullHeuristic):
         curr_state, action_path, curr_cost = frontier.pop()
         visitedNodes[curr_state] = curr_cost
 
-        if problem.isGoalState(curr_state):
-            # print(action_path)    
-            print(visitedNodes)            
+        print(curr_state,action_path)
+
+        if problem.isGoalState(curr_state):        
             return action_path
         else:
             for nbr_info in problem.getSuccessors(curr_state):      
-                ### GetSeccessors returns (nextState, direction to nextState, cost)
-                if(nbr_info[0] not in visitedNodes.keys() or visitedNodes[nbr_info[0]] > curr_cost + nbr_info[2]):            
-                    visitedNodes[nbr_info[0]] = curr_cost + nbr_info[2]
-                    frontier.update([nbr_info[0], action_path+[nbr_info[1]], curr_cost+nbr_info[2]], nbr_info[2])
+                ## GetSeccessors returns (nextState, direction to nextState, cost)
+                if(nbr_info[0] not in visitedNodes.keys() or 
+                    visitedNodes[nbr_info[0]] > curr_cost+nbr_info[2]+heuristic(nbr_info[0], problem)-heuristic(curr_state, problem)):
+                    heuristic_diff = heuristic(nbr_info[0], problem) - heuristic(curr_state, problem)
+                    frontier.update([nbr_info[0], action_path+[nbr_info[1]], curr_cost+nbr_info[2]+heuristic_diff], 
+                                                                             curr_cost+nbr_info[2]+heuristic_diff)
+                    visitedNodes[nbr_info[0]] = curr_cost+nbr_info[2]+heuristic_diff
 
+    return action_path
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    # util.raiseNotDefined()
 
 
 # Abbreviations
