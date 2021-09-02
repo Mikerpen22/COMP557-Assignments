@@ -344,7 +344,7 @@ class CornersProblem(search.SearchProblem):
                 for i in range(len(self.corners)):
                     if succ_state== self.corners[i]:
                         self.cornerVisited[i] = True
-                successors.append(((succ_state, self.cornerVisited), action, cost))
+                successors.append(((succ_state, (self.cornerVisited)), action, cost))
 
             "*** YOUR CODE HERE ***"
 
