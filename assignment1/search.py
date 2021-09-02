@@ -208,8 +208,6 @@ def aStarSearch(problem, heuristic=nullHeuristic):
             visitedNodes[curr_state[0]] = curr_cost
         else:
             visitedNodes[curr_state] = curr_cost
-
-        print(curr_state)
         
         if problem.isGoalState(curr_state):        
             return action_path
@@ -224,8 +222,8 @@ def aStarSearch(problem, heuristic=nullHeuristic):
                     key = nbr_info[0]
 
                 if (key not in visitedNodes.keys() or 
-                        visitedNodes[key] > curr_cost+nbr_info[2]+heuristic(key, problem)-heuristic(curr_state, problem)):
-                        heuristic_diff = heuristic(key, problem) - heuristic(curr_state, problem)
+                        visitedNodes[key] > curr_cost+nbr_info[2]+heuristic(nbr_info[0], problem)-heuristic(curr_state, problem)):
+                        heuristic_diff = heuristic(nbr_info[0], problem) - heuristic(curr_state, problem)
                         frontier.update([nbr_info[0], action_path+[nbr_info[1]], curr_cost+nbr_info[2]+heuristic_diff], 
                                                                                 curr_cost+nbr_info[2]+heuristic_diff)
                         visitedNodes[key] = curr_cost+nbr_info[2]+heuristic_diff
