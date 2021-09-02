@@ -310,9 +310,8 @@ class CornersProblem(search.SearchProblem):
         Returns whether this search state is a goal state of the problem.
         """
         corners_visited = state[1]  # state[0] is the coordinate
-        if False in corners_visited:
-            return False
-        return True
+        # print(corners_visited)
+        return not False in corners_visited
         "*** YOUR CODE HERE ***"
         # util.raiseNotDefined()
 

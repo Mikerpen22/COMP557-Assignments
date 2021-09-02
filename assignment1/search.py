@@ -135,7 +135,7 @@ def breadthFirstSearch(problem):
         if currentState not in exploredNodes:
             #put popped node state into explored list
             exploredNodes.append(currentState)
-
+            # print(currentState, actions, currentCost)
             if problem.isGoalState(currentState):
                 return actions
             else:
@@ -198,22 +198,44 @@ def aStarSearch(problem, heuristic=nullHeuristic):
 
     while not frontier.isEmpty():
         # print(problem._visitedlist)
-        curr_state, action_path, curr_cost = frontier.pop()
-        visitedNodes[curr_state] = curr_cost
+        curr_state, action_path, curr_cost = frontier.pop()    
 
-        print(curr_state,action_path)
+        cornor_problem = False
+        if len(curr_state) >= 2 and type(curr_state[1]) == list: # to check if heuristic to be used is cornor problem.
+            cornor_problem = True
 
+        if cornor_problem:
+            visitedNodes[curr_state[0]] = curr_cost
+        else:
+            visitedNodes[curr_state] = curr_cost
+
+        print(curr_state)
+        
         if problem.isGoalState(curr_state):        
             return action_path
         else:
             for nbr_info in problem.getSuccessors(curr_state):      
                 ## GetSeccessors returns (nextState, direction to nextState, cost)
-                if(nbr_info[0] not in visitedNodes.keys() or 
-                    visitedNodes[nbr_info[0]] > curr_cost+nbr_info[2]+heuristic(nbr_info[0], problem)-heuristic(curr_state, problem)):
-                    heuristic_diff = heuristic(nbr_info[0], problem) - heuristic(curr_state, problem)
-                    frontier.update([nbr_info[0], action_path+[nbr_info[1]], curr_cost+nbr_info[2]+heuristic_diff], 
-                                                                             curr_cost+nbr_info[2]+heuristic_diff)
-                    visitedNodes[nbr_info[0]] = curr_cost+nbr_info[2]+heuristic_diff
+                # print(nbr_info)
+                key = nbr_info
+                if cornor_problem:
+                    key = nbr_info[0][0]
+                    if (key not in visitedNodes.keys() or 
+                        visitedNodes[key] > curr_cost+nbr_info[2]+heuristic(key, problem)-heuristic(curr_state, problem)):
+                        heuristic_diff = heuristic(key, problem) - heuristic(curr_state, problem)
+                        frontier.update([nbr_info[0], action_path+[nbr_info[1]], curr_cost+nbr_info[2]+heuristic_diff], 
+                                                                                curr_cost+nbr_info[2]+heuristic_diff)
+                        visitedNodes[key] = curr_cost+nbr_info[2]+heuristic_diff
+                else:
+                    key = nbr_info[0]
+                    if (key not in visitedNodes.keys() or 
+                        visitedNodes[key] > curr_cost+nbr_info[2]+heuristic(key, problem)-heuristic(curr_state, problem)):
+                        heuristic_diff = heuristic(key, problem) - heuristic(curr_state, problem)
+                        frontier.update([key, action_path+[nbr_info[1]], curr_cost+nbr_info[2]+heuristic_diff], 
+                                                                                curr_cost+nbr_info[2]+heuristic_diff)
+                        visitedNodes[key] = curr_cost+nbr_info[2]+heuristic_diff
+               
+                
 
     return action_path
     "*** YOUR CODE HERE ***"
