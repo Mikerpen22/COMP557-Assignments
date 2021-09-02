@@ -160,7 +160,6 @@ class PositionSearchProblem(search.SearchProblem):
         self.visualize = visualize
         if warn and (gameState.getNumFood() != 1 or not gameState.hasFood(*goal)):
             print('Warning: this does not look like a regular search maze')
-
         # For display purposes
         self._visited, self._visitedlist, self._expanded = {}, [], 0 # DO NOT CHANGE
 
@@ -301,7 +300,7 @@ class CornersProblem(search.SearchProblem):
         Returns the start state (in your state space, not the full Pacman state
         space)
         """
-        return ((self.startingPosition, self.cornerVisited))
+        return (self.startingPosition, self.cornerVisited)
         "*** YOUR CODE HERE ***"
         # util.raiseNotDefined()
 
@@ -378,8 +377,32 @@ def cornersHeuristic(state, problem):
     shortest path from the state to a goal of the problem; i.e.  it should be
     admissible (as well as consistent).
     """
-    corners = problem.corners # These are the corner coordinates
+    corners = problem.corners   # These are the corner coordinates
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
+
+    h = 0   # h: heuristic
+    curr_coordinate = state[0]
+    corners_visited = state[1]    # see state definition at getStartState function
+    
+    ## We want to know which corners are unvisited, i.e. flipping the corners_visited list
+    corners_unvisited = [not i for i in corners_visited]
+
+    if True not in corners_unvisited:
+        return 0
+
+    ## Find the closest unvisited corners-
+    dist_to_corners = []
+    for i in range(len(corners_unvisited)):
+        if(corners_unvisited[i]):
+            dist_to_corners.append(util.manhattanDistance(curr_coordinate, corners[i]))
+            # dist_to_corners.append(abs(curr_coordinate[0] - corners[i][0]) + abs(curr_coordinate[1] - corners[i][1]))
+        else:
+            dist_to_corners.append(float('inf'))
+
+    h = min(dist_to_corners)
+
+    return h
+
 
     "*** YOUR CODE HERE ***"
     return 0 # Default to trivial solution
@@ -399,24 +422,6 @@ def cornersHeuristic(state, problem):
         return len(actions)
 
 
-def cornersHeuristic(state, problem):
-    """
-    A heuristic for the CornersProblem that you defined.
-
-      state:   The current search state
-               (a data structure you chose in your search problem)
-
-      problem: The CornersProblem instance for this layout.
-
-    This function should always return a number that is a lower bound on the
-    shortest path from the state to a goal of the problem; i.e.  it should be
-    admissible (as well as consistent).
-    """
-    corners = problem.corners # These are the corner coordinates
-    walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
-
-    "*** YOUR CODE HERE ***"
-    return 0 # Default to trivial solution
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
@@ -589,6 +594,7 @@ def mazeDistance(point1, point2, gameState):
 
     This might be a useful helper function for your ApproximateSearchAgent.
     """
+    print(f"gameState passed in to mazeDistance:{gameState}")
     x1, y1 = point1
     x2, y2 = point2
     walls = gameState.getWalls()
