@@ -422,15 +422,15 @@ def cornersHeuristic(state, problem):
         if state[1][i] == False:
             corners_notvisited.append(corners[i])
     
-    h_sum = 0
+    heuristic = 0
     curr_state = state[0]
     while corners_notvisited != []:
         distance, corner = min( [(util.manhattanDistance(curr_state ,corner),corner) for corner in corners_notvisited] )
-        h_sum = h_sum + distance
+        heuristic = heuristic + distance
         curr_state = corner
         corners_notvisited.remove(corner) 
 
-    return h_sum # Default to trivial solution
+    return heuristic # Default to trivial solution
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
