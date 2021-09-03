@@ -176,7 +176,7 @@ def uniformCostSearch(problem):
             else:
                 for nbr_info in problem.getSuccessors(curr_state):      
                     ### GetSeccessors returns (nextState, direction to nextState, cost)
-                    frontier.updateI([nbr_info[0], action_path+[nbr_info[1]], curr_cost+nbr_info[2]], curr_cost+nbr_info[2])
+                    frontier.update([nbr_info[0], action_path+[nbr_info[1]], curr_cost+nbr_info[2]], curr_cost+nbr_info[2])
     return action_path
     "*** YOUR CODE HERE ***"
     # util.raiseNotDefined() 
