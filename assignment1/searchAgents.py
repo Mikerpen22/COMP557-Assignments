@@ -529,8 +529,15 @@ def foodHeuristic(state, problem):
     ## Design of the heuristics:
     ## heuristic for current pacman position = (shortest distance from pacman to food) + (max distance between foods)
     ## admissible: min(pac_to_foods_dist) alone is admissible, so the problem is whether adding max(food-food dist) will break it
-    ##             There are 2 cases:
-
+    ##             There are 2 cases: 
+    ##              1. food that's closest to pac is also one of the longest distance foods
+    ##              2. food that's closest to pac is not one of the longest distance foods
+    ##              For case 1, heuristic is admissible since after pac eats the first node, it either continues to that longest node or go another way
+    ##              Either way, that longest node still needs to be eaten by Pac, so adding the two dist together is just saying we go directly to the longest node after
+    ##              eating the closest one.
+    ##              As for case 2, it's going to be greater that sum of the dist, since pac goes on other routes instead of directly going to the longest node
+    ##              Since both case do not overestimate, it's admissible
+                
     pac_to_foods_dist = []      # empty list since there might not be any food
     food_to_food_dist = [0]     # even if no food, food-food distance is still zero
     for food in food_list:
@@ -578,6 +585,7 @@ class ClosestDotSearchAgent(SearchAgent):
         walls = gameState.getWalls()
         problem = AnyFoodSearchProblem(gameState)
 
+        return search.breadthFirstSearch(problem)
         "*** YOUR CODE HERE ***"
         util.raiseNotDefined()
 
@@ -613,9 +621,9 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         complete the problem definition.
         """
         x,y = state
-
+        return self.food[x][y]
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        # util.raiseNotDefined()
 
 def mazeDistance(point1, point2, gameState):
     """
