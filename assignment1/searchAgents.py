@@ -416,19 +416,20 @@ def cornersHeuristic(state, problem):
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    corners_notvisited = []
+    corners_unvisited = []
     print(state)
     for i in range(4):
         if state[1][i] == False:
-            corners_notvisited.append(corners[i])
+            corners_unvisited.append(corners[i])
     
     heuristic = 0
     curr_state = state[0]
-    while corners_notvisited != []:
-        distance, corner = min( [(util.manhattanDistance(curr_state ,corner),corner) for corner in corners_notvisited] )
+    ## If still have corners that haven't been visited
+    while corners_unvisited != []:
+        distance, corner = min( [(util.manhattanDistance(curr_state ,corner),corner) for corner in corners_unvisited] )
         heuristic = heuristic + distance
         curr_state = corner
-        corners_notvisited.remove(corner) 
+        corners_unvisited.remove(corner) 
 
     return heuristic # Default to trivial solution
 
@@ -523,6 +524,26 @@ def foodHeuristic(state, problem):
     problem.heuristicInfo['wallCount']
     """
     position, foodGrid = state
+    food_list = foodGrid.asList()
+
+    h = 0   # h: heuristic
+    distances = []
+    distances_food = [0]
+    for food in food_list:
+        distances.append(mazeDistance(position, food, __))
+        for tofood in food_list:
+            distances_food.append(mazeDistance(food, tofood, __))
+    
+    return min(distances)+max(distances_food) if len(distances) else max(distances_food)
+
+
+
+
+
+
+
+
+
     "*** YOUR CODE HERE ***"
     return 0
 
