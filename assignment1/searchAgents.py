@@ -526,17 +526,20 @@ def foodHeuristic(state, problem):
     position, foodGrid = state
     food_list = foodGrid.asList()
 
-    h = 0   # h: heuristic
-    distances = []
-    distances_food = [0]
+    ## Design of the heuristics:
+    ## heuristic for current pacman position = (shortest distance from pacman to food) + (max distance between foods)
+    ## admissible: min(pac_to_foods_dist) alone is admissible, so the problem is whether adding max(food-food dist) will break it
+    ##             There are 2 cases:
+
+    pac_to_foods_dist = []      # empty list since there might not be any food
+    food_to_food_dist = [0]     # even if no food, food-food distance is still zero
     for food in food_list:
-        distances.append(mazeDistance(position, food, __))
-        for tofood in food_list:
-            distances_food.append(mazeDistance(food, tofood, __))
-    
-    return min(distances)+max(distances_food) if len(distances) else max(distances_food)
-
-
+        pac_to_foods_dist.append(mazeDistance(position, food, problem.startingGameState))
+        # distances.append(util.manhattanDistance(position, food)) --> expand too many nodes > 15000
+        for other_food in food_list:
+            food_to_food_dist.append(mazeDistance(food, other_food, problem.startingGameState))
+            # distances_food.append(util.manhattanDistance(position, food))
+    return min(pac_to_foods_dist)+max(food_to_food_dist) if len(pac_to_foods_dist) > 0 else max(food_to_food_dist)
 
 
 
