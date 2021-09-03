@@ -317,7 +317,7 @@ class CornersProblem(search.SearchProblem):
 
     def getSuccessors(self, state):
         """
-        Returns successor states, the actions they require, and a cost of 1.
+        Returns suohccessor states, the actions they require, and a cost of 1.
 
          As noted in search.py:
             For a given state, this should return a list of triples, (successor,
@@ -544,14 +544,14 @@ def foodHeuristic(state, problem):
         pac_to_foods_dist.append(mazeDistance(position, food, problem.startingGameState))
         # distances.append(util.manhattanDistance(position, food)) --> expand too many nodes > 15000
         for other_food in food_list:
-            food_to_food_dist.append(mazeDistance(food, other_food, problem.startingGameState))
+            if not (food == other_food):
+                food_to_food_dist.append(mazeDistance(food, other_food, problem.startingGameState))
             # distances_food.append(util.manhattanDistance(position, food))
-    return min(pac_to_foods_dist)+max(food_to_food_dist) if len(pac_to_foods_dist) > 0 else max(food_to_food_dist)
 
-
-
-
-
+    if len(pac_to_foods_dist) != 0:
+        return sum(food_to_food_dist)/len(food_to_food_dist) 
+    else: 
+        return 0
 
 
     "*** YOUR CODE HERE ***"
