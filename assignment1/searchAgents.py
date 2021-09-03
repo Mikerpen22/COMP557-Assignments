@@ -416,20 +416,29 @@ def cornersHeuristic(state, problem):
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    corners_unvisited = []
-    print(state)
-    for i in range(4):
+    corners_not_visited = []
+    # print(state)
+    for i in range(4): # Checking which corners are yet to be visited.
         if state[1][i] == False:
-            corners_unvisited.append(corners[i])
+            corners_not_visited.append(corners[i])
     
     heuristic = 0
     curr_state = state[0]
     ## If still have corners that haven't been visited
-    while corners_unvisited != []:
-        distance, corner = min( [(util.manhattanDistance(curr_state ,corner),corner) for corner in corners_unvisited] )
+    while corners_not_visited != []:
+
+        distance = util.manhattanDistance(curr_state ,corners_not_visited[0]) # setting up a starting variable which will represent the min distance between pac and corner
+        nearest_corner = 0 ,0 # the nearest corner for the current iteration
+        for corner in corners_not_visited: # iterating over all the corners that are not visited to find the closest corner 
+            man_dist = util.manhattanDistance(curr_state , corner)
+            if distance >= man_dist:
+                distance = man_dist
+                nearest_corner = corner
+        # after finding the nearest corner, we update the heuristic by adding the distace and we remove the corner for the list of 
+        # corners not visited. 
         heuristic = heuristic + distance
-        curr_state = corner
-        corners_unvisited.remove(corner) 
+        curr_state = nearest_corner
+        corners_not_visited.remove(nearest_corner) 
 
     return heuristic # Default to trivial solution
 
@@ -542,13 +551,13 @@ def foodHeuristic(state, problem):
     food_to_food_dist = [0]     # even if no food, food-food distance is still zero
     for food in food_list:
         pac_to_foods_dist.append(mazeDistance(position, food, problem.startingGameState))
-        # distances.append(util.manhattanDistance(position, food)) --> expand too many nodes > 15000
+        # pac_to_foods_dist.append(util.manhattanDistance(position, food)) --> expand too many nodes > 15000
         for other_food in food_list:
             if not (food == other_food):
                 food_to_food_dist.append(mazeDistance(food, other_food, problem.startingGameState))
-            # distances_food.append(util.manhattanDistance(position, food))
+            # food_to_food_dist.append(util.manhattanDistance(position, food))
 
-    if len(pac_to_foods_dist) != 0:
+    if  not pac_to_foods_dist == []:
         return sum(food_to_food_dist)/len(food_to_food_dist) 
     else: 
         return 0
