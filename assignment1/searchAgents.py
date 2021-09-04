@@ -547,21 +547,20 @@ def foodHeuristic(state, problem):
     ##              As for case 2, it's going to be greater that sum of the dist, since pac goes on other routes instead of directly going to the longest node
     ##              Since both case do not overestimate, it's admissible
                 
-    # pac_to_foods_dist = []      # empty list since there might not be any food
-    # food_to_food_dist = [0]     # even if no food, food-food distance is still zero
-    # for food in food_list:
-    #     pac_to_foods_dist.append(mazeDistance(position, food, problem.startingGameState))
-    #     # pac_to_foods_dist.append(util.manhattanDistance(position, food)) --> expand too many nodes > 15000
-    #     for other_food in food_list:
-    #         if not (food == other_food):
-    #             food_to_food_dist.append(mazeDistance(food, other_food, problem.startingGameState))
-    #         # food_to_food_dist.append(util.manhattanDistance(position, food))
+    pac_to_foods_dist = []      # empty list since there might not be any food
+    food_to_food_dist = [0]     # even if no food, food-food distance is still zero
+    for food in food_list:
+        pac_to_foods_dist.append(mazeDistance(position, food, problem.startingGameState))
+        # pac_to_foods_dist.append(util.manhattanDistance(position, food)) --> expand too many nodes > 15000
+        for other_food in food_list:
+            food_to_food_dist.append(mazeDistance(food, other_food, problem.startingGameState))
+            # food_to_food_dist.append(util.manhattanDistance(position, food))
 
-    # if  not pac_to_foods_dist == []:
-    #     return sum(food_to_food_dist)/len(food_to_food_dist) 
-    # else: 
-    #     return 0
-    return len(food_list) # works somehow 
+    if not pac_to_foods_dist == []:
+        return min(pac_to_foods_dist)+sum(food_to_food_dist)/len(food_to_food_dist) 
+    else: 
+        return 0
+
 
     "*** YOUR CODE HERE ***"
     return 0
