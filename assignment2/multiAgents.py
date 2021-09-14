@@ -40,9 +40,9 @@ class ReflexAgent(Agent):
         """
         # Collect legal moves and successor states
         legalMoves = gameState.getLegalActions()
-
+        
         # Choose one of the best actions
-        scores = [self.evaluationFunction(gameState, action) for action in legalMoves]
+        scores = [self.evaluationFunction(gameState, action) for action in legalMoves]  # Evaluate each action's score
         bestScore = max(scores)
         bestIndices = [index for index in range(len(scores)) if scores[index] == bestScore]
         chosenIndex = random.choice(bestIndices) # Pick randomly among the best
@@ -74,6 +74,46 @@ class ReflexAgent(Agent):
         newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
 
         "*** YOUR CODE HERE ***"
+
+        ## Be careful not to get too close to ghosts
+        avgDistToGhost = 0
+        distToGhosts = []
+        for ghostState in newGhostStates:
+            # print(f"ghosts position at {ghostState.getPosition()}")
+            distToGhosts.append(manhattanDistance(newPos, ghostState.getPosition()))
+        minDistToGhosts = min(distToGhosts)
+        avgDistToGhost = sum(distToGhosts)/len(distToGhosts)
+
+        ## Make sure we get closer to the closest food
+        distToFoods, distToNewFoods = [], []
+        for food in list(currentGameState.getFood()):
+            distToFoods.append(manhattanDistance(currentGameState.getPacmanPosition(), food))
+        for food in list(newFood):
+            distToNewFoods.append(manhattanDistance(newPos, food))
+        minDistToFood = min(distToFoods)
+        minDistToNewFood = min(distToNewFoods)
+
+
+        scoreDiff = successorGameState.getScore() - currentGameState.getScore()
+
+        direction = currentGameState.getPacmanState().getDirection()
+
+        if minDistToGhosts <= 1 or action == Directions.STOP:
+            return 0
+        elif avgDistToGhost >= 2:
+            return 2
+        elif scoreDiff > 0:
+            return 8
+        elif minDistToNewFood-minDistToFood < 0:
+            return 8
+        elif action == direction:
+            return 6
+        else:
+            return 1
+
+
+
+
         return successorGameState.getScore()
 
 def scoreEvaluationFunction(currentGameState):
