@@ -79,7 +79,6 @@ class ReflexAgent(Agent):
         avgDistToGhost = 0
         distToGhosts = []
         for ghostState in newGhostStates:
-            # print(f"ghosts position at {ghostState.getPosition()}")
             distToGhosts.append(manhattanDistance(newPos, ghostState.getPosition()))
         minDistToGhosts = min(distToGhosts)
         avgDistToGhost = sum(distToGhosts)/len(distToGhosts)
