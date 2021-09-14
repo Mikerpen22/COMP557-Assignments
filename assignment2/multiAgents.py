@@ -79,6 +79,7 @@ class ReflexAgent(Agent):
         avgDistToGhost = 0
         distToGhosts = []
         for ghostState in newGhostStates:
+
             distToGhosts.append(manhattanDistance(newPos, ghostState.getPosition()))
         minDistToGhosts = min(distToGhosts)
         avgDistToGhost = sum(distToGhosts)/len(distToGhosts)
@@ -109,9 +110,6 @@ class ReflexAgent(Agent):
             return 6
         else:
             return 1
-
-
-
 
         return successorGameState.getScore()
 
@@ -149,7 +147,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
     """
     Your minimax agent (question 2)
     """
-
+    
     def getAction(self, gameState):
         """
         Returns the minimax action from the current gameState using self.depth
@@ -174,7 +172,39 @@ class MinimaxAgent(MultiAgentSearchAgent):
         Returns whether or not the game state is a losing state
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        def maxValue(state, depth):
+            print("maxValue called")
+            v = float('-inf')
+            actions = state.getLegalActions(0)
+            for action in actions:
+                v = max(v, minValue(state.generateSuccessor(0, action), depth-1, state.getNumAgents()-1))
+            return v
+
+
+        def minValue(state, depth, agentIndex):
+            v = float('inf')
+            actions = state.getLegalActions(agentIndex)
+            for action in actions:
+                if agentIndex >= 1:
+                    v = min(v, minValue(state.generateSuccessor(agentIndex-1, action), depth-1, agentIndex-1))
+                elif agentIndex == 0:
+                    v = min(v, maxValue(state.generateSuccessor(agentIndex-1, action), depth-1))
+            return v         
+
+        def value(state, depth, agentIndex):
+            print("value called")
+            if (depth == 0) or (state.isWin()) or (state.isLose()):
+                return  self.evaluationFunction(state)
+            
+            ## Pacman's turn
+            if agentIndex == 0:
+                return maxValue(state, depth)
+            ## Ghost's turn
+            else:
+                return minValue(state, depth, state.getNumAgents()-1)
+        value(gameState, self.depth, 0)
+        
+        # util.raiseNotDefined()
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
     """
