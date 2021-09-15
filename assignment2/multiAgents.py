@@ -173,37 +173,47 @@ class MinimaxAgent(MultiAgentSearchAgent):
         """
         "*** YOUR CODE HERE ***"
         def maxValue(state, depth):
-            print("maxValue called")
+            if (depth == self.depth) or (state.isWin()) or (state.isLose()):
+                return  self.evaluationFunction(state)
             v = float('-inf')
             actions = state.getLegalActions(0)
             for action in actions:
-                v = max(v, minValue(state.generateSuccessor(0, action), depth-1, state.getNumAgents()-1))
+                v = max(v, minValue(state.generateSuccessor(0, action), depth, state.getNumAgents()-1))
             return v
 
 
         def minValue(state, depth, agentIndex):
+            if (depth == self.depth) or (state.isWin()) or (state.isLose()):
+                return  self.evaluationFunction(state)            
             v = float('inf')
             actions = state.getLegalActions(agentIndex)
             for action in actions:
-                if agentIndex >= 1:
-                    v = min(v, minValue(state.generateSuccessor(agentIndex-1, action), depth-1, agentIndex-1))
-                elif agentIndex == 0:
-                    v = min(v, maxValue(state.generateSuccessor(agentIndex-1, action), depth-1))
+                if agentIndex > 1:
+                    v = min(v, minValue(state.generateSuccessor(agentIndex, action), depth, agentIndex-1))
+                else:
+                    v = min(v, maxValue(state.generateSuccessor(agentIndex, action), depth+1))
             return v         
 
-        def value(state, depth, agentIndex):
-            print("value called")
-            if (depth == 0) or (state.isWin()) or (state.isLose()):
-                return  self.evaluationFunction(state)
-            
-            ## Pacman's turn
-            if agentIndex == 0:
-                return maxValue(state, depth)
-            ## Ghost's turn
-            else:
-                return minValue(state, depth, state.getNumAgents()-1)
-        value(gameState, self.depth, 0)
+        # def value(state, depth, agentIndex):
+        #     ## Pacman's turn
+        #     if agentIndex == 0:
+        #         return maxValue(state, depth)
+        #     ## Ghost's turn
+        #     else:
+        #         return minValue(state, depth, state.getNumAgents()-1)
         
+        ## First execution from the root
+        legalActions = gameState.getLegalActions(0)
+        actionToGo = Directions.WEST
+        max_val = float("-inf")
+        for action in legalActions:
+          tmp = maxValue(gameState.generateSuccessor(0, action), 0)
+          if tmp > max_val:
+            max_val = tmp
+            actionToGo = action
+        return actionToGo
+
+                
         # util.raiseNotDefined()
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
