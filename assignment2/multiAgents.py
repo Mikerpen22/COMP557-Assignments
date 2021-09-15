@@ -172,48 +172,38 @@ class MinimaxAgent(MultiAgentSearchAgent):
         Returns whether or not the game state is a losing state
         """
         "*** YOUR CODE HERE ***"
-        def maxValue(state, depth):
-            if (depth == self.depth) or (state.isWin()) or (state.isLose()):
-                return  self.evaluationFunction(state)
-            v = float('-inf')
-            actions = state.getLegalActions(0)
-            for action in actions:
-                v = max(v, minValue(state.generateSuccessor(0, action), depth, state.getNumAgents()-1))
-            return v
-
-
-        def minValue(state, depth, agentIndex):
-            if (depth == self.depth) or (state.isWin()) or (state.isLose()):
-                return  self.evaluationFunction(state)            
-            v = float('inf')
-            actions = state.getLegalActions(agentIndex)
-            for action in actions:
-                if agentIndex > 1:
-                    v = min(v, minValue(state.generateSuccessor(agentIndex, action), depth, agentIndex-1))
+        def minmax(state, depth, agent_idx):
+            if (state.isWin() or state.isLose() or depth == 0):
+                return self.evaluationFunction(state)
+            
+            ## At max agent's state(PAC)
+            elif agent_idx == 0:
+                legalActions = state.getLegalActions(agent_idx)                
+                return max(minmax(state.generateSuccessor(agent_idx, action), depth, 1) for action in legalActions)
+            ## At min agent's(ghost) state
+            else:
+                if agent_idx < state.getNumAgents() - 1:
+                    legalActions = state.getLegalActions(agent_idx)
+                    return min(minmax(state.generateSuccessor(agent_idx, action), depth, agent_idx+1) for action in legalActions)
                 else:
-                    v = min(v, maxValue(state.generateSuccessor(agentIndex, action), depth+1))
-            return v         
+                    legalActions = state.getLegalActions(agent_idx)
+                    return min(minmax(state.generateSuccessor(agent_idx, action), depth-1, 0) for action in legalActions) 
 
-        # def value(state, depth, agentIndex):
-        #     ## Pacman's turn
-        #     if agentIndex == 0:
-        #         return maxValue(state, depth)
-        #     ## Ghost's turn
-        #     else:
-        #         return minValue(state, depth, state.getNumAgents()-1)
         
-        ## First execution from the root
+        ## First execution from Pacman
+        best_action = Directions.EAST
         legalActions = gameState.getLegalActions(0)
-        actionToGo = Directions.WEST
-        max_val = float("-inf")
+        max_action_val = float("-inf")
         for action in legalActions:
-          tmp = maxValue(gameState.generateSuccessor(0, action), 0)
-          if tmp > max_val:
-            max_val = tmp
-            actionToGo = action
-        return actionToGo
+            temp_max_action_val = minmax(gameState.generateSuccessor(0, action), self.depth, 1)
+            if(temp_max_action_val > max_action_val):
+                max_action_val = temp_max_action_val
+                best_action = action
+        return best_action
 
-                
+
+            
+            
         # util.raiseNotDefined()
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
