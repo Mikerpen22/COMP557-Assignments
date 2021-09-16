@@ -18,6 +18,7 @@ import random, util
 
 from game import Agent
 
+
 class ReflexAgent(Agent):
     """
     A reflex agent chooses an action at each choice point by examining
@@ -27,7 +28,6 @@ class ReflexAgent(Agent):
     it in any way you see fit, so long as you don't touch our method
     headers.
     """
-
 
     def getAction(self, gameState):
         """
@@ -40,12 +40,12 @@ class ReflexAgent(Agent):
         """
         # Collect legal moves and successor states
         legalMoves = gameState.getLegalActions()
-        
+
         # Choose one of the best actions
         scores = [self.evaluationFunction(gameState, action) for action in legalMoves]  # Evaluate each action's score
         bestScore = max(scores)
         bestIndices = [index for index in range(len(scores)) if scores[index] == bestScore]
-        chosenIndex = random.choice(bestIndices) # Pick randomly among the best
+        chosenIndex = random.choice(bestIndices)  # Pick randomly among the best
 
         "Add more of your code here if you want to"
 
@@ -79,10 +79,9 @@ class ReflexAgent(Agent):
         avgDistToGhost = 0
         distToGhosts = []
         for ghostState in newGhostStates:
-
             distToGhosts.append(manhattanDistance(newPos, ghostState.getPosition()))
         minDistToGhosts = min(distToGhosts)
-        avgDistToGhost = sum(distToGhosts)/len(distToGhosts)
+        avgDistToGhost = sum(distToGhosts) / len(distToGhosts)
 
         ## Make sure we get closer to the closest food
         distToFoods, distToNewFoods = [], []
@@ -92,7 +91,6 @@ class ReflexAgent(Agent):
             distToNewFoods.append(manhattanDistance(newPos, food))
         minDistToFood = min(distToFoods)
         minDistToNewFood = min(distToNewFoods)
-
 
         scoreDiff = successorGameState.getScore() - currentGameState.getScore()
 
@@ -104,7 +102,7 @@ class ReflexAgent(Agent):
             return 2
         elif scoreDiff > 0:
             return 8
-        elif minDistToNewFood-minDistToFood < 0:
+        elif minDistToNewFood - minDistToFood < 0:
             return 8
         elif action == direction:
             return 6
@@ -112,6 +110,7 @@ class ReflexAgent(Agent):
             return 1
 
         return successorGameState.getScore()
+
 
 def scoreEvaluationFunction(currentGameState):
     """
@@ -122,6 +121,7 @@ def scoreEvaluationFunction(currentGameState):
     (not reflex agents).
     """
     return currentGameState.getScore()
+
 
 class MultiAgentSearchAgent(Agent):
     """
@@ -138,16 +138,17 @@ class MultiAgentSearchAgent(Agent):
     is another abstract class.
     """
 
-    def __init__(self, evalFn = 'scoreEvaluationFunction', depth = '2'):
-        self.index = 0 # Pacman is always agent index 0
+    def __init__(self, evalFn='scoreEvaluationFunction', depth='2'):
+        self.index = 0  # Pacman is always agent index 0
         self.evaluationFunction = util.lookup(evalFn, globals())
         self.depth = int(depth)
+
 
 class MinimaxAgent(MultiAgentSearchAgent):
     """
     Your minimax agent (question 2)
     """
-    
+
     def getAction(self, gameState):
         """
         Returns the minimax action from the current gameState using self.depth
@@ -172,44 +173,49 @@ class MinimaxAgent(MultiAgentSearchAgent):
         Returns whether or not the game state is a losing state
         """
         "*** YOUR CODE HERE ***"
+
         ## agent_idx: indicating whether its Pac's turn or ghost's turn
         def minmax(state, depth, agent_idx):
             ## Directly evaluate the state if either the we reach the depth limit or leaves state
             if (state.isWin() or state.isLose() or depth == 0):
                 return self.evaluationFunction(state)
-            
+
             ## At max agent's state(PAC)
             elif agent_idx == 0:
-                legalActions = state.getLegalActions(agent_idx)         
+                legalActions = state.getLegalActions(agent_idx)
                 ## recursively call minmax on the ghosts:
                 ## pass in 1 for the agent_idx so we can switch to the else loop dealing with ghosts
-                return max(minmax(state.generateSuccessor(agent_idx, action), depth, 1) for action in legalActions)     
-            
-            ## At min agent's(ghost) state
+                return max(minmax(state.generateSuccessor(agent_idx, action), depth, 1) for action in legalActions)
+
+                ## At min agent's(ghost) state
             else:
                 if agent_idx < state.getNumAgents() - 1:
                     legalActions = state.getLegalActions(agent_idx)
-                    return min(minmax(state.generateSuccessor(agent_idx, action), depth, agent_idx+1) for action in legalActions)
+                    return min(minmax(state.generateSuccessor(agent_idx, action), depth, agent_idx + 1) for action in
+                               legalActions)
                 ## Next move will be Pac's, so we...
                 ## 1. Decrease the depth by 1
                 ## 2. Pass in 0 for agent_idx to indicate its Pac's turn
                 else:
                     legalActions = state.getLegalActions(agent_idx)
-                    return min(minmax(state.generateSuccessor(agent_idx, action), depth-1, 0) for action in legalActions) 
+                    return min(
+                        minmax(state.generateSuccessor(agent_idx, action), depth - 1, 0) for action in legalActions)
 
-        
-        ## First execution from Pacman
-        best_action = Directions.EAST       # This is just a initial value, can be EAST, SOUTH, WEST, NORTH or even STOP
-        legalActions = gameState.getLegalActions(0)     # At the root(PAC) now, get its legal actions
+                    ## First execution from Pacman
+
+        best_action = Directions.EAST  # This is just a initial value, can be EAST, SOUTH, WEST, NORTH or even STOP
+        legalActions = gameState.getLegalActions(0)  # At the root(PAC) now, get its legal actions
         max_action_val = float("-inf")
         ## Find the max value through minmax for Pac to choose
         for action in legalActions:
-            temp_max_action_val = minmax(gameState.generateSuccessor(0, action), self.depth, 1)     # Next move will be the first ghost, pass 1 for agent_idx to show that
-            if(temp_max_action_val > max_action_val):
+            temp_max_action_val = minmax(gameState.generateSuccessor(0, action), self.depth,
+                                         1)  # Next move will be the first ghost, pass 1 for agent_idx to show that
+            if (temp_max_action_val > max_action_val):
                 max_action_val = temp_max_action_val
                 best_action = action
         return best_action
         # util.raiseNotDefined()
+
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
     """
@@ -221,32 +227,36 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         Returns the minimax action using self.depth and self.evaluationFunction
         """
         "*** YOUR CODE HERE ***"
+
         ## agent_idx: indicating whether its Pac's turn or ghost's turn
         def ABPruneMinmax(state, depth, agent_idx, a, b):
             ## Directly evaluate the state if either the we reach the depth limit or leaves state
             if (state.isWin() or state.isLose() or depth == 0):
                 return self.evaluationFunction(state)
-            
+
             ## At max agent's state(PAC)
             elif agent_idx == 0:
-                legalActions = state.getLegalActions(agent_idx)         
+                legalActions = state.getLegalActions(agent_idx)
                 ## recursively call minmax on the ghosts:
                 ## pass in 1 for the agent_idx so we can switch to the else loop dealing with ghosts
                 max_value = float("-inf")
                 for action in legalActions:
-                    max_value = max(max_value,ABPruneMinmax(state.generateSuccessor(agent_idx, action), depth, 1, a, b))
-                    if max_value > b:           # max_value is over the upper limit
+                    max_value = max(max_value,
+                                    ABPruneMinmax(state.generateSuccessor(agent_idx, action), depth, 1, a, b))
+                    if max_value > b:  # max_value is over the upper limit
                         return max_value
                     a = max(a, max_value)
                 return max_value
-            
+
             ## At min agent's(ghost) state
             else:
                 min_value = float("inf")
                 if agent_idx < state.getNumAgents() - 1:
                     legalActions = state.getLegalActions(agent_idx)
                     for action in legalActions:
-                        min_value = min(min_value, ABPruneMinmax(state.generateSuccessor(agent_idx, action), depth, agent_idx+1, a, b))
+                        min_value = min(min_value,
+                                        ABPruneMinmax(state.generateSuccessor(agent_idx, action), depth, agent_idx + 1,
+                                                      a, b))
                         ## If min_value is even less than my lower limit a, return it directly and forget about the rest
                         if min_value < a:
                             return min_value
@@ -257,37 +267,38 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
                 ## Next move will be Pac's, so we...
                 ## 1. Decrease the depth by 1
                 ## 2. Pass in 0 for agent_idx to indicate its Pac's turn
-                else: 
+                else:
                     legalActions = state.getLegalActions(agent_idx)
                     # return min(minmax(state.generateSuccessor(agent_idx, action), depth-1, 0) for action in legalActions) 
                     for action in legalActions:
-                        min_value = min(min_value, ABPruneMinmax(state.generateSuccessor(agent_idx, action), depth-1, 0, a, b))
+                        min_value = min(min_value,
+                                        ABPruneMinmax(state.generateSuccessor(agent_idx, action), depth - 1, 0, a, b))
                         if min_value < a:
                             return min_value
                         b = min(b, min_value)
                     return min_value
 
-
         ## First execution at Pacman
-        best_action = Directions.EAST       # This is just a initial value, can be EAST, SOUTH, WEST, NORTH or even STOP
-        
+        best_action = Directions.EAST  # This is just a initial value, can be EAST, SOUTH, WEST, NORTH or even STOP
+
         a = float("-inf")
         b = float("inf")
         best_action_val = float("-inf")
-        legalActions = gameState.getLegalActions(0)     # At the root(PAC) now, get its legal actions
-        
+        legalActions = gameState.getLegalActions(0)  # At the root(PAC) now, get its legal actions
+
         ## Find the max value through minmax for Pac to choose
         for action in legalActions:
-            temp_max_action_val = ABPruneMinmax(gameState.generateSuccessor(0, action), self.depth, 1, a, b)     # Next move will be the first ghost, pass 1 for agent_idx to show that
-            if(temp_max_action_val > best_action_val):
+            temp_max_action_val = ABPruneMinmax(gameState.generateSuccessor(0, action), self.depth, 1, a,
+                                                b)  # Next move will be the first ghost, pass 1 for agent_idx to show that
+            if (temp_max_action_val > best_action_val):
                 best_action_val = temp_max_action_val
                 best_action = action
             if best_action_val > b:
                 return best_action_val
             a = max(a, best_action_val)
-        return best_action 
+        return best_action
         # util.raiseNotDefined()
-        
+
 
 class ExpectimaxAgent(MultiAgentSearchAgent):
     """
@@ -302,44 +313,58 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
         legal moves.
         """
         "*** YOUR CODE HERE ***"
+
         ## agent_idx: indicating whether its Pac's turn or ghost's turn
-        def minmax(state, depth, agent_idx):
+        def expectiMax(state, depth, agent_idx):
             ## Directly evaluate the state if either the we reach the depth limit or leaves state
-            if (state.isWin() or state.isLose() or depth == 0):
+            if state.isWin() or state.isLose() or depth == 0:
                 return self.evaluationFunction(state)
-            
+
             ## At max agent's state(PAC)
             elif agent_idx == 0:
-                legalActions = state.getLegalActions(agent_idx)         
+                legal_actions = state.getLegalActions(agent_idx)
                 ## recursively call minmax on the ghosts:
                 ## pass in 1 for the agent_idx so we can switch to the else loop dealing with ghosts
-                return max(minmax(state.generateSuccessor(agent_idx, action), depth, 1) for action in legalActions)     
-            
+                max_value = float("-inf")
+                for action in legal_actions:
+                    max_value = max(max_value, expectiMax(state.generateSuccessor(agent_idx, action), depth, 1))
+                return max_value
+
             ## At min agent's(ghost) state
             else:
+                expectedValue = 0
+                min_value = float("inf")
                 if agent_idx < state.getNumAgents() - 1:
-                    legalActions = state.getLegalActions(agent_idx)
-                    return min(minmax(state.generateSuccessor(agent_idx, action), depth, agent_idx+1) for action in legalActions)
+                    legal_actions = state.getLegalActions(agent_idx)
+                    succ_state = [state.generateSuccessor(agent_idx, x) for x in legal_actions]
+                    for action in legal_actions:
+                        expectedValue += expectiMax(state.generateSuccessor(agent_idx, action), depth, agent_idx + 1)
+                    return expectedValue / len(succ_state)
                 ## Next move will be Pac's, so we...
                 ## 1. Decrease the depth by 1
                 ## 2. Pass in 0 for agent_idx to indicate its Pac's turn
                 else:
-                    legalActions = state.getLegalActions(agent_idx)
-                    return min(minmax(state.generateSuccessor(agent_idx, action), depth-1, 0) for action in legalActions) 
+                    legal_actions = state.getLegalActions(agent_idx)
+                    succ_state = [state.generateSuccessor(agent_idx, x) for x in legal_actions]
+                    # return min(minmax(state.generateSuccessor(agent_idx, action), depth-1, 0) for action in legalActions)
+                    for action in legal_actions:
+                        expectedValue += expectiMax(state.generateSuccessor(agent_idx, action), depth - 1, 0)
+                    return expectedValue / len(succ_state)
 
-        
-        ## First execution from Pacman
-        best_action = Directions.EAST       # This is just a initial value, can be EAST, SOUTH, WEST, NORTH or even STOP
-        legalActions = gameState.getLegalActions(0)     # At the root(PAC) now, get its legal actions
-        max_action_val = float("-inf")
+
+        ## First execution at Pacman
+        best_action = Directions.EAST  # This is just a initial value, can be EAST, SOUTH, WEST, NORTH or even STOP
+        best_action_val = float("-inf")
+        legalActions = gameState.getLegalActions(0)  # At the root(PAC) now, get its legal actions
+
         ## Find the max value through minmax for Pac to choose
         for action in legalActions:
-            temp_max_action_val = minmax(gameState.generateSuccessor(0, action), self.depth, 1)     # Next move will be the first ghost, pass 1 for agent_idx to show that
-            if(temp_max_action_val > max_action_val):
-                max_action_val = temp_max_action_val
+            temp_max_action_val = expectiMax(gameState.generateSuccessor(0, action), self.depth, 1)
+            # Next move will be the first ghost, pass 1 for agent_idx to show that
+            if temp_max_action_val > best_action_val:
+                best_action_val = temp_max_action_val
                 best_action = action
         return best_action
-        # util.raiseNotDefined()
 
 
 def betterEvaluationFunction(currentGameState):
@@ -351,6 +376,7 @@ def betterEvaluationFunction(currentGameState):
     """
     "*** YOUR CODE HERE ***"
     util.raiseNotDefined()
+
 
 # Abbreviation
 better = betterEvaluationFunction
