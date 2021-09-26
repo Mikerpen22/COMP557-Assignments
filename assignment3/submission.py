@@ -118,9 +118,27 @@ class PolicyIteration(util.MDPAlgorithm):
 class ValueIteration(util.MDPAlgorithm):
     def solve(self, mdp, epsilon=0.001):
         mdp.computeStates()
-        # BEGIN_YOUR_CODE (around 10 lines of code expected)
+        states = mdp.states
 
-        #
+        # BEGIN_YOUR_CODE (around 10 lines of code expected)
+        V = {}
+        pi = {}
+        # Initialize Values & Policies
+        for state in states:
+            V[state] = 0
+            pi[state] = None
+
+        err = float("inf")
+        while err > epsilon:
+            # Generate policy based on V state
+            # For each state, pick an action and see if value can be improved
+            pi = computeOptimalPolicy(mdp, V)
+            V_updated = {}
+            for state in V.keys():
+                V_updated[state] = computeQ(mdp, V, state, pi[state])
+                err = abs(V_updated[state] - V[state])
+            V = V_updated
+
         # END_YOUR_CODE
         self.pi = pi
         self.V = V

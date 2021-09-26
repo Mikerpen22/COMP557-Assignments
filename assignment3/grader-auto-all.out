@@ -34,16 +34,9 @@ parts:
   seconds: 0
 - maxPoints: 10
   maxSeconds: 1
-  messages:
-  - 'Exception thrown: <class ''NameError''> -- name ''pi'' is not defined'
-  - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment3/grader.py\"\
-    , line 103, in test1e\n    testIteration(submission.ValueIteration())\n"
-  - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment3/grader.py\"\
-    , line 87, in testIteration\n    algorithm.solve(mdp, .0001)\n"
-  - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment3/submission.py\"\
-    , line 125, in solve\n    self.pi = pi\n"
+  messages: []
   name: 4.1.5
-  points: 0
+  points: 10
   seconds: 0
 - maxPoints: 15
   maxSeconds: 1
@@ -52,7 +45,7 @@ parts:
   - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment3/grader.py\"\
     , line 137, in test2a\n    mdp.succAndProbReward(state, action)):\n"
   - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment3/submission.py\"\
-    , line 219, in succAndProbReward\n    raise Exception(\"Not implemented yet\"\
+    , line 237, in succAndProbReward\n    raise Exception(\"Not implemented yet\"\
     )\n"
   name: 4.2.1
   points: 0
@@ -64,8 +57,8 @@ parts:
   - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment3/grader.py\"\
     , line 145, in test2b\n    mdp = submission.peekingMDP()\n"
   - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment3/submission.py\"\
-    , line 235, in peekingMDP\n    raise Exception(\"Not implemented yet\")\n"
+    , line 253, in peekingMDP\n    raise Exception(\"Not implemented yet\")\n"
   name: 4.2.2
   points: 0
   seconds: 0
-totalPoints: 35
+totalPoints: 45
