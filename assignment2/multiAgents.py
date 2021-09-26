@@ -109,8 +109,6 @@ class ReflexAgent(Agent):
         else:
             return 1
 
-        return successorGameState.getScore()
-
 
 def scoreEvaluationFunction(currentGameState):
     """
@@ -400,14 +398,14 @@ def betterEvaluationFunction(currentGameState):
     food_score = 0
     ghost_score = 0
 
-    #getting nearest food and ghost
+    # getting nearest food and ghost
     if len(food_dist) > 0:
         food_score = min(food_dist)
     if len(ghost_dist) > 0:
         ghost_score = min(ghost_dist)
 
     # calculating score: more negative score for a nearby ghost compared to nearby food
-    score  += -2*food_score + -4*ghost_score
+    score += -2*food_score + -4*ghost_score
 
     return score
     #util.raiseNotDefined()
