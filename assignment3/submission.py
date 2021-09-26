@@ -1,7 +1,11 @@
-import collections, util, math, random
+import collections
+import util
+import math
+import random
 
 ############################################################
 # Problem 4.1.1
+
 
 def computeQ(mdp, V, state, action):
     """
@@ -11,11 +15,16 @@ def computeQ(mdp, V, state, action):
     documentation).  Note that |V| is a dictionary.  
     """
     # BEGIN_YOUR_CODE (around 2 lines of code expected)
-    raise Exception("Not implemented yet")
+    Q_sum = 0
+    for newState, prob, reward in mdp.succAndProbReward(state, action):
+        Q_sum += prob * (reward + mdp.discount() * V[newState])
+
+    return Q_sum
     # END_YOUR_CODE
 
 ############################################################
 # Problem 4.1.2
+
 
 def policyEvaluation(mdp, V, pi, epsilon=0.001):
     """
@@ -24,11 +33,29 @@ def policyEvaluation(mdp, V, pi, epsilon=0.001):
     dictionaries.
     """
     # BEGIN_YOUR_CODE (around 7 lines of code expected)
-    raise Exception("Not implemented yet")
+    mdp.computeStates()
+    states = mdp.states
+    for state in states:
+        V[state] = 0
+
+    err = 100
+    while err >= epsilon:
+        newValues = {}
+        for state in states:
+            newValues[state] = computeQ(mdp, V, state, pi[state])
+            err = abs(newValues[state] - V[state])
+
+        # Exit the loop if err is within epsilon
+        if(err < epsilon):
+            return newValues
+        # If not, update V and continue the loop
+        V = newValues
+
     # END_YOUR_CODE
 
 ############################################################
 # Problem 4.1.3
+
 
 def computeOptimalPolicy(mdp, V):
     """
@@ -37,18 +64,48 @@ def computeOptimalPolicy(mdp, V):
     dictionary.
     """
     # BEGIN_YOUR_CODE (around 4 lines of code expected)
-    raise Exception("Not implemented yet")
+    # For each state, go through all its actions and computeQ to find the action based on V from policy evaluation
+    pi_optimal = {}
+    for state in V:
+        Q_max = float("inf")
+        Q_max_action = None
+        for action in mdp.actions():
+            Q = computeQ(mdp, V, state, action)
+            if(Q > Q_max):
+                Q_max = Q
+                Q_max_action = action
+
+        # Update policy pi to the best action we find
+        pi_optimal[state] = Q_max_action
+
+    return pi_optimal
     # END_YOUR_CODE
 
 ############################################################
 # Problem 4.1.4
 
+
 class PolicyIteration(util.MDPAlgorithm):
     def solve(self, mdp, epsilon=0.001):
         mdp.computeStates()
+        states = mdp.states
         # compute |V| and |pi|, which should both be dicts
+
         # BEGIN_YOUR_CODE (around 8 lines of code expected)
-        raise Exception("Not implemented yet")
+        # Initialize states for first iteration
+        V, pi = {}, {}
+        for state in states:
+            V[state] = 0
+            pi[state] = None
+        pi_updated = computeOptimalPolicy(mdp, V)
+
+        # Continue policy iteration till policy converges
+        while pi != pi_updated:
+            pi_updated = computeOptimalPolicy(mdp, V)
+            V = policyEvaluation(mdp, V, pi_updated, epsilon)
+
+        #
+
         # END_YOUR_CODE
         self.pi = pi
         self.V = V
@@ -56,11 +113,12 @@ class PolicyIteration(util.MDPAlgorithm):
 ############################################################
 # Problem 4.1.5
 
+
 class ValueIteration(util.MDPAlgorithm):
     def solve(self, mdp, epsilon=0.001):
         mdp.computeStates()
         # BEGIN_YOUR_CODE (around 10 lines of code expected)
-        raise Exception("Not implemented yet")
+
         # END_YOUR_CODE
         self.pi = pi
         self.V = V
@@ -72,6 +130,8 @@ class ValueIteration(util.MDPAlgorithm):
 # the code blocks below.  If you decide that 1f is false, construct a
 # counterexample by filling out this class and returning an alpha value in
 # counterexampleAlpha().
+
+
 class CounterexampleMDP(util.MDP):
     def __init__(self):
         # BEGIN_YOUR_CODE (around 1 line of code expected)
@@ -101,6 +161,7 @@ class CounterexampleMDP(util.MDP):
         raise Exception("Not implemented yet")
         # END_YOUR_CODE
 
+
 def counterexampleAlpha():
     # BEGIN_YOUR_CODE (around 1 line of code expected)
     raise Exception("Not implemented yet")
@@ -108,6 +169,7 @@ def counterexampleAlpha():
 
 ############################################################
 # Problem 4.2.1
+
 
 class BlackjackMDP(util.MDP):
     def __init__(self, cardValues, multiplicity, threshold, peekCost):
@@ -133,7 +195,8 @@ class BlackjackMDP(util.MDP):
     #      in the deck, or None if the deck is empty or the game is over (e.g. when
     #      the user quits or goes bust).
     def startState(self):
-        return (0, None, (self.multiplicity,) * len(self.cardValues))  # total, next card (if any), multiplicity for each card
+        # total, next card (if any), multiplicity for each card
+        return (0, None, (self.multiplicity,) * len(self.cardValues))
 
     # Return set of actions possible from |state|.
     # You do not need to modify this function.
@@ -160,6 +223,7 @@ class BlackjackMDP(util.MDP):
 ############################################################
 # Problem 4.2.2
 
+
 def peekingMDP():
     """
     Return an instance of BlackjackMDP where peeking is the optimal action at
@@ -168,4 +232,3 @@ def peekingMDP():
     # BEGIN_YOUR_CODE (around 2 lines of code expected)
     raise Exception("Not implemented yet")
     # END_YOUR_CODE
-
