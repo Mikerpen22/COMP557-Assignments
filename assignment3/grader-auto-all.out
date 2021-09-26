@@ -28,31 +28,9 @@ parts:
   seconds: 0
 - maxPoints: 10
   maxSeconds: 1
-  messages:
-  - Expected '1', but got '-1'
-  - Expected to be < 0.001000, but got 26.474111
-  - Expected '1', but got '-1'
-  - Expected to be < 0.001000, but got 30.439403
-  - Expected '1', but got '-1'
-  - Expected to be < 0.001000, but got 33.410492
-  - Expected '1', but got '-1'
-  - Expected to be < 0.001000, but got 35.473348
-  - Expected '1', but got '-1'
-  - Expected to be < 0.001000, but got 36.687660
-  - Expected '1', but got '-1'
-  - Expected to be < 0.001000, but got 37.088563
-  - Expected '1', but got '-1'
-  - Expected to be < 0.001000, but got 36.687660
-  - Expected '1', but got '-1'
-  - Expected to be < 0.001000, but got 35.473348
-  - Expected '1', but got '-1'
-  - Expected to be < 0.001000, but got 33.410492
-  - Expected '1', but got '-1'
-  - Expected to be < 0.001000, but got 30.439403
-  - Expected '1', but got '-1'
-  - Expected to be < 0.001000, but got 26.474111
+  messages: []
   name: 4.1.4
-  points: 0
+  points: 10
   seconds: 0
 - maxPoints: 10
   maxSeconds: 1
@@ -63,7 +41,7 @@ parts:
   - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment3/grader.py\"\
     , line 87, in testIteration\n    algorithm.solve(mdp, .0001)\n"
   - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment3/submission.py\"\
-    , line 124, in solve\n    self.pi = pi\n"
+    , line 125, in solve\n    self.pi = pi\n"
   name: 4.1.5
   points: 0
   seconds: 0
@@ -74,7 +52,7 @@ parts:
   - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment3/grader.py\"\
     , line 137, in test2a\n    mdp.succAndProbReward(state, action)):\n"
   - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment3/submission.py\"\
-    , line 218, in succAndProbReward\n    raise Exception(\"Not implemented yet\"\
+    , line 219, in succAndProbReward\n    raise Exception(\"Not implemented yet\"\
     )\n"
   name: 4.2.1
   points: 0
@@ -86,8 +64,8 @@ parts:
   - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment3/grader.py\"\
     , line 145, in test2b\n    mdp = submission.peekingMDP()\n"
   - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment3/submission.py\"\
-    , line 234, in peekingMDP\n    raise Exception(\"Not implemented yet\")\n"
+    , line 235, in peekingMDP\n    raise Exception(\"Not implemented yet\")\n"
   name: 4.2.2
   points: 0
   seconds: 0
-totalPoints: 25
+totalPoints: 35

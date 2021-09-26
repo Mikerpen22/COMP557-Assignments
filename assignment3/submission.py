@@ -94,11 +94,12 @@ class PolicyIteration(util.MDPAlgorithm):
 
         # BEGIN_YOUR_CODE (around 8 lines of code expected)
         # Initialize states for first iteration
-        V, pi = {}, {}
+        V = {}
+        pi = {}
         for state in states:
             V[state] = 0
             pi[state] = None
-        pi_updated = computeOptimalPolicy(mdp, V)
+        pi_updated = {}
 
         # Continue policy iteration till policy converges
         while pi != pi_updated:
