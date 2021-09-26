@@ -1,0 +1,104 @@
+maxTotalPoints: 65
+messages: []
+mode: q1
+parts:
+- maxPoints: 2
+  maxSeconds: 1
+  messages: []
+  name: 4.1.1-0
+  points: 2
+  seconds: 0
+- maxPoints: 3
+  maxSeconds: 1
+  messages: []
+  name: 4.1.1-1
+  points: 3
+  seconds: 0
+- maxPoints: 15
+  maxSeconds: 1
+  messages: []
+  name: 4.1.2
+  points: 15
+  seconds: 0
+- maxPoints: 5
+  maxSeconds: 1
+  messages:
+  - Expected '1', but got 'None'
+  - Expected '1', but got 'None'
+  - Expected '1', but got 'None'
+  - Expected '1', but got 'None'
+  - Expected '1', but got 'None'
+  - Expected '1', but got 'None'
+  - Expected '1', but got 'None'
+  - Expected '1', but got 'None'
+  - Expected '1', but got 'None'
+  - Expected '1', but got 'None'
+  - Expected '1', but got 'None'
+  name: 4.1.3
+  points: 0
+  seconds: 0
+- maxPoints: 10
+  maxSeconds: 1
+  messages:
+  - Expected '1', but got 'None'
+  - Expected to be < 0.001000, but got 3.525004
+  - Expected '1', but got 'None'
+  - Expected to be < 0.001000, but got 1.377788
+  - Expected '1', but got 'None'
+  - Expected to be < 0.001000, but got 6.077393
+  - Expected '1', but got 'None'
+  - Expected to be < 0.001000, but got 10.536184
+  - Expected '1', but got 'None'
+  - Expected to be < 0.001000, but got 14.709566
+  - Expected '1', but got 'None'
+  - Expected to be < 0.001000, but got 18.544685
+  - Expected '1', but got 'None'
+  - Expected to be < 0.001000, but got 21.978901
+  - Expected '1', but got 'None'
+  - Expected to be < 0.001000, but got 24.937971
+  - Expected '1', but got 'None'
+  - Expected to be < 0.001000, but got 27.333906
+  - Expected '1', but got 'None'
+  - Expected to be < 0.001000, but got 29.062422
+  - Expected '1', but got 'None'
+  - Expected to be < 0.001000, but got 29.999922
+  name: 4.1.4
+  points: 0
+  seconds: 0
+- maxPoints: 10
+  maxSeconds: 1
+  messages:
+  - 'Exception thrown: <class ''NameError''> -- name ''pi'' is not defined'
+  - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment3/grader.py\"\
+    , line 84, in test1e\n    testIteration(submission.ValueIteration())\n"
+  - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment3/grader.py\"\
+    , line 72, in testIteration\n    algorithm.solve(mdp, .0001)\n"
+  - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment3/submission.py\"\
+    , line 124, in solve\n    self.pi = pi\n"
+  name: 4.1.5
+  points: 0
+  seconds: 0
+- maxPoints: 15
+  maxSeconds: 1
+  messages:
+  - 'Exception thrown: <class ''Exception''> -- Not implemented yet'
+  - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment3/grader.py\"\
+    , line 116, in test2a\n    mdp.succAndProbReward(state, action)):\n"
+  - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment3/submission.py\"\
+    , line 218, in succAndProbReward\n    raise Exception(\"Not implemented yet\"\
+    )\n"
+  name: 4.2.1
+  points: 0
+  seconds: 0
+- maxPoints: 5
+  maxSeconds: 1
+  messages:
+  - 'Exception thrown: <class ''Exception''> -- Not implemented yet'
+  - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment3/grader.py\"\
+    , line 121, in test2b\n    mdp = submission.peekingMDP()\n"
+  - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment3/submission.py\"\
+    , line 234, in peekingMDP\n    raise Exception(\"Not implemented yet\")\n"
+  name: 4.2.2
+  points: 0
+  seconds: 0
+totalPoints: 20

@@ -50,6 +50,7 @@ def policyEvaluation(mdp, V, pi, epsilon=0.001):
             return newValues
         # If not, update V and continue the loop
         V = newValues
+    return V
 
     # END_YOUR_CODE
 
@@ -67,9 +68,9 @@ def computeOptimalPolicy(mdp, V):
     # For each state, go through all its actions and computeQ to find the action based on V from policy evaluation
     pi_optimal = {}
     for state in V:
-        Q_max = float("inf")
+        Q_max = float("-inf")
         Q_max_action = None
-        for action in mdp.actions():
+        for action in mdp.actions(state):
             Q = computeQ(mdp, V, state, action)
             if(Q > Q_max):
                 Q_max = Q
@@ -101,10 +102,9 @@ class PolicyIteration(util.MDPAlgorithm):
 
         # Continue policy iteration till policy converges
         while pi != pi_updated:
+            pi = pi_updated
             pi_updated = computeOptimalPolicy(mdp, V)
             V = policyEvaluation(mdp, V, pi_updated, epsilon)
-
-        #
 
         # END_YOUR_CODE
         self.pi = pi
@@ -119,6 +119,7 @@ class ValueIteration(util.MDPAlgorithm):
         mdp.computeStates()
         # BEGIN_YOUR_CODE (around 10 lines of code expected)
 
+        #
         # END_YOUR_CODE
         self.pi = pi
         self.V = V
