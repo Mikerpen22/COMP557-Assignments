@@ -94,8 +94,7 @@ class PolicyIteration(util.MDPAlgorithm):
 
         # BEGIN_YOUR_CODE (around 8 lines of code expected)
         # Initialize states for first iteration
-        V = {}
-        pi = {}
+        V, pi = {}, {}
         for state in states:
             V[state] = 0
             pi[state] = None
@@ -121,8 +120,7 @@ class ValueIteration(util.MDPAlgorithm):
         states = mdp.states
 
         # BEGIN_YOUR_CODE (around 10 lines of code expected)
-        V = {}
-        pi = {}
+        V, pi = {}, {}
         # Initialize Values & Policies
         for state in states:
             V[state] = 0
@@ -132,6 +130,9 @@ class ValueIteration(util.MDPAlgorithm):
         while err > epsilon:
             # Generate policy based on V state
             # For each state, pick an action and see if value can be improved
+
+            # The diff between Value Iteration & Policy Iteration is mainly on the next line
+            # We take max over all possible actions in Value Iteration
             pi = computeOptimalPolicy(mdp, V)
             V_updated = {}
             for state in V.keys():
@@ -234,8 +235,12 @@ class BlackjackMDP(util.MDP):
     #   don't include that state in the list returned by succAndProbReward.
     def succAndProbReward(self, state, action):
         # BEGIN_YOUR_CODE (around 50 lines of code expected)
-        raise Exception("Not implemented yet")
-        # END_YOUR_CODE
+
+        # Return if no card left in deck (same as player quits)
+        if state[2] == (0,) * len(self.cardValues):
+            return ((state[0], None, None), 1, state[0])
+
+            # END_YOUR_CODE
 
     def discount(self):
         return 1
