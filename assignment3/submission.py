@@ -174,6 +174,7 @@ class CounterexampleMDP(util.MDP):
     # coming out of |state|.
     def succAndProbReward(self, state, action):
         # BEGIN_YOUR_CODE (around 1 line of code expected)
+
         raise Exception("Not implemented yet")
         # END_YOUR_CODE
 
@@ -237,8 +238,62 @@ class BlackjackMDP(util.MDP):
         # BEGIN_YOUR_CODE (around 50 lines of code expected)
 
         # Return if no card left in deck (same as player quits)
-        if state[2] == (0,) * len(self.cardValues):
-            return ((state[0], None, None), 1, state[0])
+        # if state[2] == (0,) * len(self.cardValues):
+        #     return ((state[0], None, None), 1, state[0])
+        
+        result = []
+        if action == 'Quit':
+            if state[2] == (0,) * len(self.cardValues):
+                return []
+            result.append(((state[0], None, None), 1.0, state[0]))
+
+        elif state[2] == (0,) * len(self.cardValues):
+             result.append(((state[0], None, None), 1, state[0]))
+        
+        elif action == 'Take':
+            # check if peeked or not
+            # if peeked, you will have to draw the card.
+            # else we can take the card or choose to peek
+
+            # the next card is not peeked
+            # (1,0,1,1) => 
+            cardDeck = list(state[2])
+            if cardDeck is not None:
+                if state[1] is None:
+                    for i in range(len(state[2])):
+                        total_sum = sum(state[2])
+                        if cardDeck[i] != 0:
+                            cardDeck[i] -= 1 
+                            prob = i/total_sum
+                            if state[0] + i < self.threshold:
+                                result.append(((state[0]+i, None, cardDeck), prob, 0))
+                            else:
+                                result.append(((0, None, None), 1.0, 0))
+                else:
+                    peekingIndex = state[1]
+                    state[0]+= cardDeck[peekingIndex]
+                    cardDeck[peekingIndex] -= 1 
+
+                    if state[0] < self.threshold:
+                        result.append(((state[0]+i, None, cardDeck), prob, 0))
+                    else:
+                        result.append(((0, None, None), 1.0, 0))
+        
+        elif action == 'Peek':
+            # accomodate peeking cost
+            cardDeck = list(state[2])
+            if cardDeck is not None:
+                for i in range(len(cardDeck)):
+                    total_sum = sum(cardDeck)
+                    if cardDeck[i] != 0:
+                        prob = cardDeck[i]/total_sum
+                        result.append(((state[0], i, cardDeck), prob, state[0] - self.peekCost))
+                        
+        return result
+            
+
+
+
 
             # END_YOUR_CODE
 
