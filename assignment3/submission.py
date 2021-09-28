@@ -256,9 +256,9 @@ class BlackjackMDP(util.MDP):
             # else we can take the card or choose to peek
 
             # the next card is not peeked
-            # (1,0,1,1) => 
-            cardDeck = list(state[2])
-            if cardDeck is not None:
+            # (1,0,1,1) =>
+            if state[2] is not None:
+                cardDeck = list(state[2])
                 if state[1] is None:
                     for i in range(len(state[2])):
                         total_sum = sum(state[2])
@@ -266,27 +266,31 @@ class BlackjackMDP(util.MDP):
                             cardDeck[i] -= 1 
                             prob = i/total_sum
                             if state[0] + i < self.threshold:
+                                cardDeck = tuple(cardDeck)
                                 result.append(((state[0]+i, None, cardDeck), prob, 0))
                             else:
                                 result.append(((0, None, None), 1.0, 0))
                 else:
                     peekingIndex = state[1]
-                    state[0]+= cardDeck[peekingIndex]
+                    state[0] += cardDeck[peekingIndex]
                     cardDeck[peekingIndex] -= 1 
 
+
                     if state[0] < self.threshold:
+                        cardDeck = tuple(cardDeck)
                         result.append(((state[0]+i, None, cardDeck), prob, 0))
                     else:
                         result.append(((0, None, None), 1.0, 0))
         
         elif action == 'Peek':
             # accomodate peeking cost
-            cardDeck = list(state[2])
-            if cardDeck is not None:
+            if state[2] is not None:
+                cardDeck = list(state[2])
                 for i in range(len(cardDeck)):
                     total_sum = sum(cardDeck)
                     if cardDeck[i] != 0:
                         prob = cardDeck[i]/total_sum
+                        cardDeck = tuple(cardDeck)
                         result.append(((state[0], i, cardDeck), prob, state[0] - self.peekCost))
                         
         return result
