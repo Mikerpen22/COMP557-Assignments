@@ -154,39 +154,44 @@ class ValueIteration(util.MDPAlgorithm):
 
 
 class CounterexampleMDP(util.MDP):
+class CounterexampleMDP(util.MDP):
     def __init__(self):
         # BEGIN_YOUR_CODE (around 1 line of code expected)
-        raise Exception("Not implemented yet")
+        return
         # END_YOUR_CODE
 
     def startState(self):
         # BEGIN_YOUR_CODE (around 1 line of code expected)
-        raise Exception("Not implemented yet")
+        return 0
         # END_YOUR_CODE
 
     # Return set of actions possible from |state|.
     def actions(self, state):
         # BEGIN_YOUR_CODE (around 1 line of code expected)
-        raise Exception("Not implemented yet")
+        return ['a']
         # END_YOUR_CODE
 
     # Return a list of (newState, prob, reward) tuples corresponding to edges
     # coming out of |state|.
     def succAndProbReward(self, state, action):
         # BEGIN_YOUR_CODE (around 1 line of code expected)
+        if state == 0:
+            return [(1, 0.2, 10), (2, 0.8, 3)]
 
-        raise Exception("Not implemented yet")
+        # End state => directly return
+        return []
         # END_YOUR_CODE
 
     def discount(self):
         # BEGIN_YOUR_CODE (around 1 line of code expected)
-        raise Exception("Not implemented yet")
+        # No discount factor in this example
+        return 1
         # END_YOUR_CODE
 
 
 def counterexampleAlpha():
     # BEGIN_YOUR_CODE (around 1 line of code expected)
-    raise Exception("Not implemented yet")
+    return 0.2
     # END_YOUR_CODE
 
 ############################################################
