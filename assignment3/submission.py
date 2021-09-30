@@ -244,7 +244,6 @@ class BlackjackMDP(util.MDP):
         if state[2] is None:
             return []
 
-
         elif action == 'Quit':
             if state[0] > self.threshold:
                 result.append((0, None, None), 1.0, 0)
@@ -265,7 +264,8 @@ class BlackjackMDP(util.MDP):
             # (1,0,1,1) =>
                 # cardDeck = list(state[2])   # cast type to list in order to modified it
                 if state[1] is None:
-                    for i in range(len(state[2])):
+                    cardDeck = list(state[2])
+                    for i in range(len(cardDeck)):
                         if state[2][i] != 0:
                             cardDeck = list(state[2])   # cast type to list in order to modified it
                             total_sum = sum(cardDeck)
@@ -306,7 +306,7 @@ class BlackjackMDP(util.MDP):
                     else:
                         # print("pick peeked card and busted")
                         result.append(((curr, None, None), 1, 0))
-
+        
         elif action == 'Peek':
             # accomodate peeking cost
                 #cardDeck = list(state[2])
@@ -316,8 +316,8 @@ class BlackjackMDP(util.MDP):
                         prob = state[2][i]/total_sum
                         #cardDecks = tuple(cardDeck)
                         result.append(
-                            ((state[0], i, state[2]), prob, state[0] - self.peekCost))
-
+                            ((state[0], i, state[2]), prob, -self.peekCost))
+        print(result)
         return result
         # END_YOUR_CODE
 
@@ -334,6 +334,6 @@ def peekingMDP():
     least 10% of the time.
     """
     # BEGIN_YOUR_CODE (around 2 lines of code expected)
-    return BlackjackMDP([1, 2, 3, 4, 6, 7], 10, 20, 1)
+    return BlackjackMDP([20,12], 3, 20, 1)
     raise Exception("Not implemented yet")
     # END_YOUR_CODE
