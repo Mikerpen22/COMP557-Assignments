@@ -252,8 +252,8 @@ class BlackjackMDP(util.MDP):
             else:
                 result.append(((0, None, None), 1.0, state[0])) # try state[0]
 
-        # elif state[2] == (0,) * len(self.cardValues):
-        #     result.append(((state[0], None, None), 1, state[0]))
+        elif state[2] == (0,) * len(self.cardValues):
+            result.append(((state[0], None, None), 1, state[0]))
 
         elif action == 'Take':
             # check if peeked or not
@@ -261,7 +261,8 @@ class BlackjackMDP(util.MDP):
             # else we can take the card or choose to peek
 
             # the next card is not peeked
-            # (1,0,1,1) =>
+            # (1,0,1,1) => 3
+
                 # cardDeck = list(state[2])   # cast type to list in order to modified it
                 if state[1] is None:
                     cardDeck = list(state[2])
@@ -274,20 +275,22 @@ class BlackjackMDP(util.MDP):
                             curr = state[0] + self.cardValues[i]
                             # Check if busted or not after taking the card
                             total_sum -= 1
-                            if total_sum == 0:
+                            if total_sum != 0:
+                                if curr < self.threshold:
+                                    cardDecks = tuple(cardDeck)
+                                    result.append(
+                                                ((curr, None, cardDecks), prob, 0))
+                                elif curr == self.threshold:
+                                    # print("exit 1")
+                                    result.append(
+                                                ((curr, None, None), prob, curr))
+                                else:
+                                    # print("busted")
+                                    result.append(((curr, None, None), prob, 0))
+
+                            else:
                                 result.append(
                                         ((curr, None, None), 1, curr))
-                            elif curr < self.threshold:
-                                cardDecks = tuple(cardDeck)
-                                result.append(
-                                            ((curr, None, cardDecks), prob, 0))
-                            elif curr == self.threshold:
-                                # print("exit 1")
-                                result.append(
-                                            ((curr, None, None), prob, curr))
-                            else:
-                                 # print("busted")
-                                result.append(((curr, None, None), prob, 0))
                 
                 else:
                     cardDeck = list(state[2])   # cast type to list in order to modified it
@@ -309,15 +312,14 @@ class BlackjackMDP(util.MDP):
         
         elif action == 'Peek':
             # accomodate peeking cost
-                #cardDeck = list(state[2])
+                cardDeck = list(state[2])
                 total_sum = sum(state[2])
                 for i in range(len(state[2])):
                     if state[2][i] != 0:
                         prob = state[2][i]/total_sum
-                        #cardDecks = tuple(cardDeck)
+                        cardDecks = tuple(cardDeck)
                         result.append(
                             ((state[0], i, state[2]), prob, -self.peekCost))
-        print(result)
         return result
         # END_YOUR_CODE
 
@@ -334,6 +336,6 @@ def peekingMDP():
     least 10% of the time.
     """
     # BEGIN_YOUR_CODE (around 2 lines of code expected)
-    return BlackjackMDP([20, 10, 7, 3, 1], 3, 20, 1)
+    return BlackjackMDP([20, 10, 7, 3, 11], 3, 20, 1)
     raise Exception("Not implemented yet")
     # END_YOUR_CODE
