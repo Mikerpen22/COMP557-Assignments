@@ -243,13 +243,18 @@ class BlackjackMDP(util.MDP):
         result = []
         if state[2] is None:
             return []
-        if action == 'Quit':
-            if sum(state[2]) == 0:
-                return []
-            result.append(((state[0], None, None), 1.0, state[0]))
 
-        elif state[2] == (0,) * len(self.cardValues):
-            result.append(((state[0], None, None), 1, state[0]))
+
+        elif action == 'Quit':
+            if state[0] > self.threshold:
+                result.append((0, None, None), 1.0, 0)
+            # elif sum(state[2]) == 0:
+            #     result.append(((0, None, None), 1.0, state[0]))
+            else:
+                result.append(((0, None, None), 1.0, state[0])) # try state[0]
+
+        # elif state[2] == (0,) * len(self.cardValues):
+        #     result.append(((state[0], None, None), 1, state[0]))
 
         elif action == 'Take':
             # check if peeked or not
@@ -261,30 +266,29 @@ class BlackjackMDP(util.MDP):
                 # cardDeck = list(state[2])   # cast type to list in order to modified it
                 if state[1] is None:
                     for i in range(len(state[2])):
-                        cardDeck = list(state[2])   # cast type to list in order to modified it
-                        total_sum = sum(cardDeck)
-                        
-                        if cardDeck[i] != 0:
+                        if state[2][i] != 0:
+                            cardDeck = list(state[2])   # cast type to list in order to modified it
+                            total_sum = sum(cardDeck)
                             prob = cardDeck[i]/total_sum
                             cardDeck[i] -= 1
                             curr = state[0] + self.cardValues[i]
                             # Check if busted or not after taking the card
-                            if sum(cardDeck) != 0:
-                                if curr < self.threshold:
-                                    cardDecks = tuple(cardDeck)
-                                    result.append(
-                                        ((curr, None, cardDecks), prob, 0))
-                                elif curr == self.threshold:
-                                    # print("exit 1")
-                                    result.append(
-                                        ((curr, None, None), prob, curr))
-                                else:
-                                    # print("busted")
-                                    result.append(((curr, None, None), prob, 0))
-                            else:
+                            total_sum -= 1
+                            if total_sum == 0:
                                 result.append(
                                         ((curr, None, None), 1, curr))
-                                
+                            elif curr < self.threshold:
+                                cardDecks = tuple(cardDeck)
+                                result.append(
+                                            ((curr, None, cardDecks), prob, 0))
+                            elif curr == self.threshold:
+                                # print("exit 1")
+                                result.append(
+                                            ((curr, None, None), prob, curr))
+                            else:
+                                 # print("busted")
+                                result.append(((curr, None, None), prob, 0))
+                
                 else:
                     cardDeck = list(state[2])   # cast type to list in order to modified it
                     cardDeck[state[1]] -= 1
@@ -305,14 +309,14 @@ class BlackjackMDP(util.MDP):
 
         elif action == 'Peek':
             # accomodate peeking cost
-                cardDeck = list(state[2])
-                for i in range(len(cardDeck)):
-                    total_sum = sum(cardDeck)
-                    if cardDeck[i] != 0:
-                        prob = cardDeck[i]/total_sum
-                        cardDecks = tuple(cardDeck)
+                #cardDeck = list(state[2])
+                total_sum = sum(state[2])
+                for i in range(len(state[2])):
+                    if state[2][i] != 0:
+                        prob = state[2][i]/total_sum
+                        #cardDecks = tuple(cardDeck)
                         result.append(
-                            ((state[0], i, cardDecks), prob, state[0] - self.peekCost))
+                            ((state[0], i, state[2]), prob, state[0] - self.peekCost))
 
         return result
         # END_YOUR_CODE
