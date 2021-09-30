@@ -334,6 +334,6 @@ def peekingMDP():
     least 10% of the time.
     """
     # BEGIN_YOUR_CODE (around 2 lines of code expected)
-    return BlackjackMDP([20,12], 3, 20, 1)
+    return BlackjackMDP([20, 10, 7, 3, 1], 3, 20, 1)
     raise Exception("Not implemented yet")
     # END_YOUR_CODE
