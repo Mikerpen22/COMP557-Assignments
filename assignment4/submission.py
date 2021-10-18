@@ -17,7 +17,16 @@ def create_nqueens_csp(n = 8):
     """
     csp = util.CSP()
     # BEGIN_YOUR_CODE (around 7 lines of code expected)
-    raise Exception("Not implemented yet")
+    variables = ["x_1", "x_2", "x_3", "x_4", "x_5", "x_6", "x_7", "x_8"]
+    for var in variables:
+        csp.add_variable(var, [i+1 for i in range(8)])
+
+    for i, x_i in enumerate(variables):
+        for j, x_j in enumerate(variables):
+            if i != j:
+                csp.add_binary_potential(x_i, x_j, lambda x, y: x != y and abs(x-y) != abs(i-j))
+
+    # raise Exception("Not implemented yet")
     # END_YOUR_CODE
     return csp
 
@@ -51,7 +60,7 @@ class BacktrackingSearch():
         # Keep track of the number of times backtrack() gets called.
         self.numOperations = 0
 
-        # Keey track of the number of operations to get to the very first successful
+        # Keep track of the number of operations to get to the very first successful
         # assignment (doesn't have to be optimal).
         self.firstAssignmentNumOperations = 0
 
@@ -107,7 +116,7 @@ class BacktrackingSearch():
         described in reset_result().
 
         @param csp: A weighted CSP.
-        @param mcv: When enabled, Monst Constrained Variable heuristics is used.
+        @param mcv: When enabled, Most Constrained Variable heuristics is used.
         @param lcv: When enabled, Least Constraining Value heuristics is used.
         @param mac: When enabled, AC-3 will be used after each assignment of an
             variable is made.
@@ -213,7 +222,23 @@ class BacktrackingSearch():
             # Heuristic: most constrained variable (MCV)
             # Select a variable with the least number of remaining domain values.
             # BEGIN_YOUR_CODE (around 5 lines of code expected)
-            raise Exception("Not implemented yet")
+            least_v_cnt = 10000
+            mcv_var = 10000
+            for var in range(len(assignment)):
+                v_cnt = 0
+                if assignment[var] is None:
+                    for val in self.csp.valNames[var]:
+                        idx_of_val = val - 1
+                        if self.get_delta_weight(assignment, var, idx_of_val) != 0:
+                            v_cnt += 1
+                    if v_cnt < least_v_cnt:
+                        least_v_cnt = v_cnt
+                        mcv_var = var
+
+
+            return mcv_var
+
+            # raise Exception("Not implemented yet")
             # END_YOUR_CODE
 
     def get_ordered_values(self, assignment, var):
