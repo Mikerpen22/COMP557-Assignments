@@ -300,16 +300,7 @@ class BlackjackMDP(util.MDP):
                         cardDecks = tuple(cardDeck)
                         # print("pick peeked card and not busted")
                         result.append(
-                            ((curr, None, cardDecks), 1, 0))
 
-                    elif curr == self.threshold:
-                                    # print("exit 1")
-                                    result.append(
-                                        ((curr, None, None), 1, curr))
-                    else:
-                        # print("pick peeked card and busted")
-                        result.append(((curr, None, None), 1, 0))
-        
         elif action == 'Peek':
             # accomodate peeking cost
                 cardDeck = list(state[2])
