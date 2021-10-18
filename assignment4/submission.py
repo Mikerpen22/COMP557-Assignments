@@ -251,7 +251,7 @@ class BacktrackingSearch():
             what you've seen so far.
         @param var: The variable that's going to be assigned next.
 
-        @return ordered_values: A list of indeces of |var|'s domain values.
+        @return ordered_values: A list of indices of |var|'s domain values.
         """
         if not self.lcv:
             # Return an order of value indices without any heuristics.
@@ -264,6 +264,22 @@ class BacktrackingSearch():
             # Return value indices in ascending order of the number of additional
             # constraints imposed on unassigned neighboring variables.
             # BEGIN_YOUR_CODE (around 12 lines of code expected)
+            domain_values = self.csp.valNames[var]
+
+            # domain_list = []
+            # For each value a in the domain of the variable X_j we want to assign:
+                # Create counter cnt = 0
+                # For each unassigned variable X_k
+                    # For each value b in its domain
+                        # If (X_k = b) is consistent with (X_j = a): cnt++
+                # domain_list.append([a, cnt])
+            # return domain_list sorted by cnt
+
+
+
+
+
+
             # Will update the domains! The unary constraint on var, val was already checked by backtrack before calling this method
             raise Exception("Not implemented yet")
             # END_YOUR_CODE
