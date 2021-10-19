@@ -234,8 +234,6 @@ class BacktrackingSearch():
                     if v_cnt < least_v_cnt:
                         least_v_cnt = v_cnt
                         mcv_var = var
-
-
             return mcv_var
 
             # raise Exception("Not implemented yet")
@@ -264,7 +262,15 @@ class BacktrackingSearch():
             # Return value indices in ascending order of the number of additional
             # constraints imposed on unassigned neighboring variables.
             # BEGIN_YOUR_CODE (around 12 lines of code expected)
-            domain_values = self.csp.valNames[var]
+            
+            # A heuristic for ordering values of a variable's domain is the least 
+            # constraining value (LCV). Given the next variable to be assigned XjX_jXj​, sort
+            #  its domain values aaa in descending order of the number of values of an unassigned 
+            #  neighboring variable XkX_kXk​ that is consistent with it (consistent means the binary potential
+            #  or factor on Xj=aX_j=aXj​=a and Xk=bX_k=bXk​=b  is non-zero). Note that you should only count values
+            #  bbb of XkX_kXk​ which are already consistent with the existing partial assignment. Implement this
+            #  heuristic in get_ordered_values() under the condition self.lcv = True. You will need to use binaryPotentials in CSP.
+
 
             # domain_list = []
             # For each value a in the domain of the variable X_j we want to assign:
@@ -275,11 +281,18 @@ class BacktrackingSearch():
                 # domain_list.append([a, cnt])
             # return domain_list sorted by cnt
 
+            domain_values = self.csp.valNames[var]
 
+            for val in domain_values:
+                cnt = 0
+                for val_k in range(len(assignment)):
+                    if assignment[val_k] is None:
+                        domain_val_k = self.csp.valNames[assignment[val_k]]
+                        for val_b in domain_val_k:
+                            if val_b == self.csp.binaryPotentials[var]:
+                                
 
-
-
-
+            
             # Will update the domains! The unary constraint on var, val was already checked by backtrack before calling this method
             raise Exception("Not implemented yet")
             # END_YOUR_CODE
