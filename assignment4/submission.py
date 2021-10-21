@@ -349,22 +349,30 @@ class BacktrackingSearch():
         """
         # Problem 3.1d
         # BEGIN_YOUR_CODE (around 15-20 lines of code expected)
-        q = queue.Queue()
-        q.put(var)
-        while not q.empty():
-            domain_changed_var = q.get()   # return and remove item from queue
-            mod_domains = copy.deepcopy(self.domains)
-            for neighbor in range(len(self.domains)):
-                # mod_domains = enforce_arc_consistency(neighbor, domain_changed_var)
-                nbr_domain = set()  # use set to store good domain values for this neighbor
-                for neighbor_val in self.domains[neighbor]:
-                    for domain_changed_val in self.domains[domain_changed_var]:
-                        if self.csp.binaryPotentials[neighbor][domain_changed_var][neighbor_val][domain_changed_val] != 0 \
-                                and self.csp.unaryPotentials[neighbor][neighbor_val] != 0 \
-                                and self.csp.unaryPotentials[domain_changed_var][domain_changed_val] != 0:
-                            nbr_domain.add(neighbor_val)
 
-                mod_domains[neighbor] = list(nbr_domain)
+        ## I have no idea how this works?
+        if len(self.domains[var]) == 0:
+            for varB in self.csp.binaryPotentials[var]:
+                self.domains[varB] = []
+            return
+
+        changedVars = []
+        for varB in self.csp.binaryPotentials[var]:
+            callOnVarB = False
+            valBToRemove = []
+            for valBIndex in self.domains[varB]:
+                total = 0
+                for valAIndex in self.domains[var]:
+                    total = total + 1 if self.csp.binaryPotentials[var][varB][valAIndex][valBIndex] != 0 else total
+                if total == 0:  # valB wasn't consistent with any valAs in var's domain
+                    callOnVarB = True
+                    valBToRemove.append(valBIndex)
+            for valBIndex in valBToRemove: self.domains[varB].remove(valBIndex)
+            if callOnVarB:
+                changedVars.append(varB)
+        for changed in changedVars:
+            self.arc_consistency_check(changed)
+        return
 
         # raise Exception("Not implemented yet")
         # END_YOUR_CODE
