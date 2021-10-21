@@ -205,14 +205,15 @@ class BacktrackingSearch():
             # BEGIN_YOUR_CODE (around 10-15 lines of code expected)
             for val in ordered_values:
                 deltaWeight = self.get_delta_weight(assignment, var, val)
+                # Check if this assignment of val to var is  consistent with current assignments
                 if deltaWeight > 0:
                     assignment[var] = val
                     tempDomain = copy.deepcopy(self.domains)
-                    self.domains[var] = [val]
-                    self.arc_consistency_check(var)
-                    self.backtrack(assignment, numAssigned+1, weight*deltaWeight)
-                    assignment[var] = None
-                    self.domains = tempDomain
+                    self.domains[var] = [val]   # Since this var is assigned val, the domain becomes just [val]
+                    self.arc_consistency_check(var)     # Update other variable's domain based on this newly assigned var
+                    self.backtrack(assignment, numAssigned + 1, weight * deltaWeight)      # Recursively dfs backtrack
+                    assignment[var] = None      # Restore assignment of var to None
+                    self.domains = tempDomain   # Restore domains back before the assignment
             # raise Exception("Not implemented yet")
             # END_YOUR_CODE
 
@@ -350,31 +351,26 @@ class BacktrackingSearch():
         # Problem 3.1d
         # BEGIN_YOUR_CODE (around 15-20 lines of code expected)
 
-        ## I have no idea how this works?
-        if len(self.domains[var]) == 0:
-            for varB in self.csp.binaryPotentials[var]:
-                self.domains[varB] = []
-            return
-
-        changedVars = []
-        for varB in self.csp.binaryPotentials[var]:
-            callOnVarB = False
-            valBToRemove = []
-            for valBIndex in self.domains[varB]:
-                total = 0
-                for valAIndex in self.domains[var]:
-                    total = total + 1 if self.csp.binaryPotentials[var][varB][valAIndex][valBIndex] != 0 else total
-                if total == 0:  # valB wasn't consistent with any valAs in var's domain
-                    callOnVarB = True
-                    valBToRemove.append(valBIndex)
-            for valBIndex in valBToRemove: self.domains[varB].remove(valBIndex)
-            if callOnVarB:
-                changedVars.append(varB)
+        changedVars = []        # If neighbor's domain changed -> put into the list because we need to do arc consistency on that neighbor later
+        for neighbor_var in self.csp.binaryPotentials[var]:     # Loop through those that has constraints with var
+            neighbor_domain_changed = False
+            neighbor_val_to_del = []
+            for neighbor_val in self.domains[neighbor_var]:
+                consistent_cnt = 0
+                for val in self.domains[var]:
+                    if self.csp.binaryPotentials[var][neighbor_var][val][neighbor_val] != 0:
+                        consistent_cnt += 1
+                if consistent_cnt == 0:  # we remove neighbor_val from domain of neighbor_var because not consistent
+                    neighbor_domain_changed = True
+                    neighbor_val_to_del.append(neighbor_val)
+            for valBIndex in neighbor_val_to_del:
+                self.domains[neighbor_var].remove(valBIndex)
+            if neighbor_domain_changed:
+                changedVars.append(neighbor_var)
         for changed in changedVars:
             self.arc_consistency_check(changed)
         return
 
-        # raise Exception("Not implemented yet")
         # END_YOUR_CODE
 
 ############################################################
