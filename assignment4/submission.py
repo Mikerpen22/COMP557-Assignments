@@ -4,6 +4,8 @@ import collections, util, copy
 
 ############################################################
 # Problem 3.1a
+import queue
+
 
 def create_nqueens_csp(n = 8):
     """
@@ -201,7 +203,17 @@ class BacktrackingSearch():
             # Problem 3.1d
             # When arc consistency check is enabled.
             # BEGIN_YOUR_CODE (around 10-15 lines of code expected)
-            raise Exception("Not implemented yet")
+            for val in ordered_values:
+                deltaWeight = self.get_delta_weight(assignment, var, val)
+                if deltaWeight > 0:
+                    assignment[var] = val
+                    tempDomain = copy.deepcopy(self.domains)
+                    self.domains[var] = [val]
+                    self.arc_consistency_check(var)
+                    self.backtrack(assignment, numAssigned+1, weight*deltaWeight)
+                    assignment[var] = None
+                    self.domains = tempDomain
+            # raise Exception("Not implemented yet")
             # END_YOUR_CODE
 
     def get_unassigned_variable(self, assignment):
@@ -236,7 +248,6 @@ class BacktrackingSearch():
                     if v_cnt < least_v_cnt:
                         least_v_cnt = v_cnt
                         mcv_var = var
-
 
             return mcv_var
 
@@ -294,7 +305,6 @@ class BacktrackingSearch():
             domain_sorted = [i[0] for i in tmp_domain_store_sorted]
             return domain_sorted    # Modified the domain(?)
 
-
             # Will update the domains! The unary constraint on var, val was already checked by backtrack before calling this method
             # raise Exception("Not implemented yet")
             # END_YOUR_CODE
@@ -339,7 +349,24 @@ class BacktrackingSearch():
         """
         # Problem 3.1d
         # BEGIN_YOUR_CODE (around 15-20 lines of code expected)
-        raise Exception("Not implemented yet")
+        q = queue.Queue()
+        q.put(var)
+        while not q.empty():
+            domain_changed_var = q.get()   # return and remove item from queue
+            mod_domains = copy.deepcopy(self.domains)
+            for neighbor in range(len(self.domains)):
+                # mod_domains = enforce_arc_consistency(neighbor, domain_changed_var)
+                nbr_domain = set()  # use set to store good domain values for this neighbor
+                for neighbor_val in self.domains[neighbor]:
+                    for domain_changed_val in self.domains[domain_changed_var]:
+                        if self.csp.binaryPotentials[neighbor][domain_changed_var][neighbor_val][domain_changed_val] != 0 \
+                                and self.csp.unaryPotentials[neighbor][neighbor_val] != 0 \
+                                and self.csp.unaryPotentials[domain_changed_var][domain_changed_val] != 0:
+                            nbr_domain.add(neighbor_val)
+
+                mod_domains[neighbor] = list(nbr_domain)
+
+        # raise Exception("Not implemented yet")
         # END_YOUR_CODE
 
 ############################################################
