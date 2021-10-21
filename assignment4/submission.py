@@ -235,6 +235,7 @@ class BacktrackingSearch():
                         least_v_cnt = v_cnt
                         mcv_var = var
 
+
             return mcv_var
 
             # raise Exception("Not implemented yet")
@@ -262,16 +263,21 @@ class BacktrackingSearch():
             # Heuristic: least constraining value (LCV)
             # Return value indices in ascending order of the number of additional
             # constraints imposed on unassigned neighboring variables.
-            # BEGIN_YOUR_CODE
-            pass
+            # BEGIN_YOUR_CODE (around 12 lines of code expected)
+            domain_values = self.csp.valNames[var]
 
-            For each value a in the domain of the variable X_j we want to assign:
-                Create counter cnt = 0
-                For each unassigned variable X_k
-                    For each value b in its domain
-                        If (X_k = b) is consistent with (X_j = a): cnt++
-                domain_list.append([a, cnt])
-            return domain_list sorted by cnt
+            # domain_list = []
+            # For each value a in the domain of the variable X_j we want to assign:
+                # Create counter cnt = 0
+                # For each unassigned variable X_k
+                    # For each value b in its domain
+                        # If (X_k = b) is consistent with (X_j = a): cnt++
+                # domain_list.append([a, cnt])
+            # return domain_list sorted by cnt
+
+
+
+
 
 
             # Will update the domains! The unary constraint on var, val was already checked by backtrack before calling this method
