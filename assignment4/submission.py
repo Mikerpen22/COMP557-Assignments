@@ -102,9 +102,11 @@ class BacktrackingSearch():
             w *= self.csp.unaryPotentials[var][val]
             if w == 0: return w
         for var2, potential in self.csp.binaryPotentials[var].items():
-            if assignment[var2] == None: continue  # Not assigned yet
+            if assignment[var2] == None:
+                continue  # Not assigned yet
             w *= potential[val][assignment[var2]]
-            if w == 0: return w
+            if w == 0:
+                return w
         return w
 
     def solve(self, csp, mcv = False, lcv = False, mac = False):
@@ -275,13 +277,26 @@ class BacktrackingSearch():
                 # domain_list.append([a, cnt])
             # return domain_list sorted by cnt
 
+            tmp_domain_store = []  # temporary store: (domain value a for X_j,
+                                   # count of values of an unassigned variable that is consistent with new assignment and original partial assignment
+            for val in self.domains[var]:   # For each value a in X_j's domain
+                cnt = 0
+                for var_k in range(len(assignment)):
+                    if var_k != var and assignment[var_k] is None:  # Now var_k hasn't been assigned yet
+                        for val_k in self.domains[var_k]:  # need to check if val_k is already consistent with partial assignment
+                            # 1st condition: choosing val_k for var_k should be consistent with previous assignment
+                            # 2nd condition: choosing val_k for var_k should be consistent with choosing val for var
+                            if self.get_delta_weight(assignment, var_k, val_k) != 0 and self.csp.binaryPotentials[var][var_k][val][val_k] == 0:
+                                cnt += 1
 
-
-
+                tmp_domain_store.append((val, cnt))
+            tmp_domain_store_sorted = sorted(tmp_domain_store, key=lambda val: val[1])   # sort the domain values based on cnt
+            domain_sorted = [i[0] for i in tmp_domain_store_sorted]
+            return domain_sorted    # Modified the domain(?)
 
 
             # Will update the domains! The unary constraint on var, val was already checked by backtrack before calling this method
-            raise Exception("Not implemented yet")
+            # raise Exception("Not implemented yet")
             # END_YOUR_CODE
    
     def arc_consistency_check(self, var):

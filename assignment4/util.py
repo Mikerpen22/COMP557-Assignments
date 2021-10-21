@@ -383,12 +383,12 @@ def print_course_scheduling_solution(solution):
     """
 
     if solution == None:
-        print ("No schedule found that satisfied all the constraints.")
+        print("No schedule found that satisfied all the constraints.")
     else:
-        print ("Here's the best schedule:")
-        print ("Semester\t\tUnits\tCourse")
+        print("Here's the best schedule:")
+        print("Semester\t\tUnits\tCourse")
         for semester, course, units in solution:
             if units != None:
-                print( "  %s\t%s\t%s" % (semester, units, course))
+                print(" %s\t%s\t%s" % (semester, units, course))
             else:
                 print ("  %s\t%s\t%s" % (semester, 'None', course))
