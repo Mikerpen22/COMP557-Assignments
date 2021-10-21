@@ -397,7 +397,31 @@ def get_sum_variable(csp, name, variables, maxSum):
     """
 
     # BEGIN_YOUR_CODE (around 12-15 lines of code expected)
-    raise Exception("Not implemented yet")
+
+    if len(variables) is 0:
+        varName = 'sum' + str(name)
+        csp.add_variable(varName, [0])
+        return varName
+
+    varName = 'sum' + str(name) + '0'
+    csp.add_variable(varName, [(0, i) for i in range(maxSum + 1)])
+    csp.add_binary_potential(varName, variables[0], lambda x, y: x[1] == y)
+
+    for i, var in enumerate(variables):
+        if i > 0:
+            oldVarName = varName
+            varName = 'sum' + str(name) + str(i)
+            csp.add_variable(varName, [(k, j) for k in range(maxSum + 1) for j in range(maxSum + 1)])
+            csp.add_binary_potential(varName, oldVarName, lambda x, y: x[0] == y[1])
+            csp.add_binary_potential(varName, variables[i], lambda x, y: x[1] == (x[0] + y))
+
+    lastVarName = 'sum' + str(name)
+    csp.add_variable(lastVarName, range(maxSum + 1))
+    csp.add_binary_potential(lastVarName, varName, lambda x, y: x == y[1])
+    return lastVarName
+
+
+    # raise Exception("Not implemented yet")
     # END_YOUR_CODE
 
 ############################################################
