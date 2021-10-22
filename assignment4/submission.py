@@ -397,7 +397,7 @@ def get_sum_variable(csp, name, variables, maxSum):
     """
 
     # BEGIN_YOUR_CODE (around 12-15 lines of code expected)
-
+    ## WE NEED TO FIX THIS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     if len(variables) is 0:
         varName = 'sum' + str(name)
         csp.add_variable(varName, [0])
@@ -453,8 +453,8 @@ class SchedulingCSPConstructor():
 
         @param csp: The CSP where the additional constraints will be added to.
         """
-
         for req in self.profile.requests:
+            # print(req)   -->   Request{['COMP182'] [] [] 1}
             for cid in req.cids:
                 if cid not in csp.varNames:
                     csp.add_variable(cid, self.profile.semesters + [None])
@@ -492,12 +492,22 @@ class SchedulingCSPConstructor():
         """
         If the profile explicitly wants a request to be satisfied in some given
         semesters, e.g. Fall2018, then add constraints to not allow that request to
-        be satisified in any other semester.
+        be satisfied in any other semester.
 
         @param csp: The CSP where the additional constraints will be added to.
         """
-        # BEGIN_YOUR_CODE (around 4 lines of code expected)      
-        raise Exception("Not implemented yet")
+        # BEGIN_YOUR_CODE (around 4 lines of code expected)
+        for req in self.profile.requests:
+            # -------------------------For logging--------------------------#
+            # print(req)   -->    Request{['COMP310'] ['Fall2019'] [] 1}
+            # print(req.semesters)    --> ['Fall2019']
+            # -------------------------For logging--------------------------#
+            if len(req.semesters) > 0:
+                # print(self.profile.semesters) --> ['Fall2019']
+                for semester in self.profile.semesters:
+                    if semester not in req.semesters:
+                        csp.add_unary_potential((req, semester), lambda cid: cid == None)   # request won't satisfy in any other semesters
+        # raise Exception("Not implemented yet")
         # END_YOUR_CODE
 
     def add_request_weights(self, csp):
@@ -527,7 +537,9 @@ class SchedulingCSPConstructor():
 
         @param csp: The CSP where the additional constraints will be added to.
         """
-        # BEGIN_YOUR_CODE (around 20 lines of code expected)      
+        # BEGIN_YOUR_CODE (around 20 lines of code expected)
+
+
         raise Exception("Not implemented yet")
         # END_YOUR_CODE
 
