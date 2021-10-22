@@ -522,9 +522,8 @@ class SchedulingCSPConstructor():
         # BEGIN_YOUR_CODE (around 3 lines of code expected) 
         #print(self.profile.semesters) --> ['Fall2019']
         for req in self.profile.requests:
-            if len(req.semesters)>0:
-                for semester in self.profile.semesters:
-                        csp.add_unary_potential(req.cids[0], lambda cid: req.weight if cid != None else 1.0)   # request won't satisfy in any other semesters
+            for semester in self.profile.semesters:
+                csp.add_unary_potential(req.cids[0], lambda cid: req.weight if cid != None else 1.0)   # request won't satisfy in any other semesters
         # raise Exception("Not implemented yet")
         # END_YOUR_CODE
 
