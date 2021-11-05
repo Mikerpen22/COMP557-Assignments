@@ -75,7 +75,9 @@ class DiscreteDistribution(dict):
         {}
         """
         "*** YOUR CODE HERE ***"
-        raiseNotDefined()
+        for key in self.keys():
+            self[key] = self[key]/sum(self.values())
+        #raiseNotDefined()
 
     def sample(self):
         """
@@ -99,7 +101,8 @@ class DiscreteDistribution(dict):
         0.0
         """
         "*** YOUR CODE HERE ***"
-        raiseNotDefined()
+
+        #raiseNotDefined()
 
 
 class InferenceModule:
