@@ -77,7 +77,7 @@ if __name__ == "__main__":
     # -- 2.1.3a: learnWeightsFromPerceptron
     def test1_3a_0():
         weights = submission.learnWeightsFromPerceptron(
-                trainSpamExamples[:100], 
+                trainSpamExamples[:100],
                 submission.extractUnigramFeatures,
                 util.LABELS_SPAM,
                 3)
