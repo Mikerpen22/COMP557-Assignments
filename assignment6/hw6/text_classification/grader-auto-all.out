@@ -16,29 +16,15 @@ parts:
   seconds: 0
 - maxPoints: 2
   maxSeconds: 10
-  messages:
-  - 'Exception thrown: <class ''NotImplementedError''> -- TODO:'
-  - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment6/hw6/text_classification/grader.py\"\
-    , line 59, in test_1_2a\n    grader.requireIsEqual(features, submission.extractUnigramFeatures(sentence))\n"
-  - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment6/hw6/text_classification/submission.py\"\
-    , line 81, in extractUnigramFeatures\n    raise NotImplementedError(\"TODO:\"\
-    )\n"
+  messages: []
   name: 2.1.2a
-  points: 0
+  points: 2
   seconds: 0
 - maxPoints: 2
   maxSeconds: 10
-  messages:
-  - 'Exception thrown: <class ''NotImplementedError''> -- TODO:'
-  - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment6/hw6/text_classification/grader.py\"\
-    , line 70, in test1_2b\n    classifier.classifyWithLabel( \"The quick dog chased\"\
-    ))\n"
-  - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment6/hw6/text_classification/submission.py\"\
-    , line 31, in classifyWithLabel\n    if self.classify(text) >= 0.:\n"
-  - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment6/hw6/text_classification/submission.py\"\
-    , line 102, in classify\n    raise NotImplementedError(\"TODO:\")\n"
+  messages: []
   name: 2.1.2b
-  points: 0
+  points: 2
   seconds: 0
 - maxPoints: 0
   maxSeconds: 10
@@ -47,7 +33,7 @@ parts:
   - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment6/hw6/text_classification/grader.py\"\
     , line 79, in test1_3a_0\n    weights = submission.learnWeightsFromPerceptron(\n"
   - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment6/hw6/text_classification/submission.py\"\
-    , line 116, in learnWeightsFromPerceptron\n    raise NotImplementedError(\"TODO:\"\
+    , line 129, in learnWeightsFromPerceptron\n    raise NotImplementedError(\"TODO:\"\
     )\n"
   name: 2.1.3a-0
   points: 0
@@ -59,7 +45,7 @@ parts:
   - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment6/hw6/text_classification/grader.py\"\
     , line 89, in test1_3a_1\n    weights = submission.learnWeightsFromPerceptron(\n"
   - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment6/hw6/text_classification/submission.py\"\
-    , line 116, in learnWeightsFromPerceptron\n    raise NotImplementedError(\"TODO:\"\
+    , line 129, in learnWeightsFromPerceptron\n    raise NotImplementedError(\"TODO:\"\
     )\n"
   name: 2.1.3a-1
   points: 0
@@ -71,7 +57,7 @@ parts:
   - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment6/hw6/text_classification/grader.py\"\
     , line 112, in test_1_3b_0\n    grader.requireIsEqual(features, submission.extractBigramFeatures(sentence))\n"
   - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment6/hw6/text_classification/submission.py\"\
-    , line 127, in extractBigramFeatures\n    raise NotImplementedError(\"TODO:\"\
+    , line 140, in extractBigramFeatures\n    raise NotImplementedError(\"TODO:\"\
     )\n"
   name: 2.1.3b-0
   points: 0
@@ -83,11 +69,11 @@ parts:
   - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment6/hw6/text_classification/grader.py\"\
     , line 157, in test_3a_0\n    classifier = submission.OneVsAllClassifier( labels,\n"
   - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment6/hw6/text_classification/submission.py\"\
-    , line 162, in __init__\n    super(OneVsAllClassifier, self).__init__(labels,\
+    , line 175, in __init__\n    super(OneVsAllClassifier, self).__init__(labels,\
     \ classifiers)\n"
   - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment6/hw6/text_classification/submission.py\"\
-    , line 137, in __init__\n    raise NotImplementedError(\"TODO:\")\n"
+    , line 150, in __init__\n    raise NotImplementedError(\"TODO:\")\n"
   name: 2.3a-0
   points: 0
   seconds: 0
-totalPoints: 2
+totalPoints: 6

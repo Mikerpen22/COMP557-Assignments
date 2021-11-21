@@ -6,6 +6,7 @@ import util
 import operator
 from collections import Counter
 import re
+import numpy as np
 
 
 class Classifier(object):
@@ -77,7 +78,14 @@ def extractUnigramFeatures(x):
     @return dict: feature vector representation of x.
     """
     # BEGIN_YOUR_CODE (around 6 lines of code expected)
-    raise NotImplementedError("TODO:")       
+    # Create feature vector
+    features = Counter()    # data structure similar to the one provided on the description page
+                            # { brown: 1, lazy: 1, fence: 1, fox: 1, over: 1, chased: 1...}
+    words = x.split()
+    for word in words:
+        features[word] += 1
+    return features
+    # raise NotImplementedError("TODO:")
     # END_YOUR_CODE
 
 
@@ -98,7 +106,13 @@ class WeightedClassifier(Classifier):
         @return double y: classification score; >= 0 if positive label
         """
         # BEGIN_YOUR_CODE (around 2 lines of code expected)
-        raise NotImplementedError("TODO:")       
+        features = self.featureFunction(x)
+        weighted_sum = 0
+        for feature in features.keys():
+            if feature in self.params:
+                weighted_sum += self.params[feature] * features[feature]
+        return weighted_sum
+        # raise NotImplementedError("TODO:")
         # END_YOUR_CODE
 
 def learnWeightsFromPerceptron(trainExamples, featureExtractor, labels, iters = 20):
