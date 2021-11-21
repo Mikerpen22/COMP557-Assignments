@@ -108,9 +108,9 @@ class DiscreteDistribution(dict):
             self.normalize()
         rand = random.random()
         runningSum = 0
-        for key, value in enmuerate(self.items()):
-            runningSum+=value
-            if runningSum > rand :
+        for key, value in enumerate(self.items()):
+            runningSum += value
+            if runningSum > rand:
                 return key    
         return
         #raiseNotDefined()
