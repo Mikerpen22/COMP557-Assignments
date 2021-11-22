@@ -17,14 +17,14 @@ def runKMeans(k,patches,maxIter):
     """
     # This line starts you out with randomly initialized centroids in a matrix 
     # with patchSize rows and k columns. Each column is a centroid.
-    centroids = np.random.randn(patches.shape[0],k)
+    centroids = np.random.randn(patches.shape[0], k)
 
     numPatches = patches.shape[1]
 
     for i in range(maxIter):
         # BEGIN_YOUR_CODE (around 19 lines of code expected)
         # Assignment step:
-        z = np.zeros(numPatches, dtype=np.int)
+        z = np.zeros(numPatches)
 
         # Assignment
         for patch_i in range(numPatches):
@@ -43,7 +43,6 @@ def runKMeans(k,patches,maxIter):
             centroids_t[j] = np.mean(patch_same_centroid, axis=0)
         centroids = centroids_t.T
 
-
         # raise Exception("Not yet implemented")
         # END_YOUR_CODE
 
@@ -52,7 +51,7 @@ def runKMeans(k,patches,maxIter):
 ############################################################
 # Problem 4.2
 
-def extractFeatures(patches,centroids):
+def extractFeatures(patches, centroids):
     """
     Given patches for an image and a set of centroids, extracts and return
     the features for that image.
@@ -67,10 +66,23 @@ def extractFeatures(patches,centroids):
     """
     k = centroids.shape[1]
     numPatches = patches.shape[1]
-    features = np.empty((numPatches,k))
+    features = np.empty((numPatches, k))
 
     # BEGIN_YOUR_CODE (around 9 lines of code expected)
-    raise Exception("Not yet implemented")
+    for patch_i in range(numPatches):   # loop through cols
+        newFeature = np.zeros(k)
+        curr_patch = patches.T[patch_i]
+        for j in range(k):
+            total_dist = 0
+            centroid_j_pos = centroids.T[j]
+            for centroid_K in range(k):
+                centroid_k_pos = centroids.T[centroid_K]
+                total_dist += np.linalg.norm(curr_patch - centroid_k_pos)
+            avg_dist = total_dist / k
+            a_ijk = avg_dist - np.linalg.norm(curr_patch - centroid_j_pos)
+            newFeature[j] = max(a_ijk, 0)
+        features[patch_i] = newFeature
+    # raise Exception("Not yet implemented")
     # END_YOUR_CODE
     return features
 
@@ -78,7 +90,7 @@ def extractFeatures(patches,centroids):
 # Problem 4.3.1
 
 import math
-def logisticGradient(theta,featureVector,y):
+def logisticGradient(theta, featureVector, y):
     """
     Calculates and returns gradient of the logistic loss function with
     respect to parameter vector theta.
@@ -91,8 +103,16 @@ def logisticGradient(theta,featureVector,y):
     Returns:
       1D numpy array of gradient of logistic loss w.r.t. to theta
     """
+
     # BEGIN_YOUR_CODE (around 2 lines of code expected)
-    raise Exception("Not yet implemented.")
+    yy = 2*y - 1
+    grad = np.zeros(len(theta))
+    for i in range(len(theta)):
+        up = -featureVector[i] * yy * np.exp(-np.dot(theta, featureVector*yy))
+        bottom = 1 + np.exp(-theta.dot(featureVector) * yy)
+        grad[i] = up / bottom
+    return grad
+    # raise Exception("Not yet implemented.")
     # END_YOUR_CODE
 
 ############################################################
@@ -112,6 +132,7 @@ def hingeLossGradient(theta,featureVector,y):
       1D numpy array of gradient of hinge loss w.r.t. to theta
     """
     # BEGIN_YOUR_CODE (around 6 lines of code expected)
-    raise Exception("Not yet implemented.")
+
+    # raise Exception("Not yet implemented.")
     # END_YOUR_CODE
 
