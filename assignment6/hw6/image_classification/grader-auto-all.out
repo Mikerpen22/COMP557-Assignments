@@ -16,80 +16,38 @@ parts:
   seconds: 0
 - maxPoints: 3
   maxSeconds: 1
-  messages:
-  - 'Exception thrown: <class ''Exception''> -- Not yet implemented.'
-  - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment6/hw6/image_classification/grader.py\"\
-    , line 50, in <lambda>\n    grader.addBasicPart('4.3.1.1', lambda : grader.requireIsEqual(np.array([-0.01798621,\
-    \ -0.01798621]), submission.logisticGradient(theta,fv1, 1)),3)\n"
-  - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment6/hw6/image_classification/submission.py\"\
-    , line 109, in logisticGradient\n    raise Exception(\"Not yet implemented.\"\
-    )\n"
+  messages: []
   name: 4.3.1.1
-  points: 0
+  points: 3
   seconds: 0
 - maxPoints: 4
   maxSeconds: 1
-  messages:
-  - 'Exception thrown: <class ''Exception''> -- Not yet implemented.'
-  - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment6/hw6/image_classification/grader.py\"\
-    , line 51, in <lambda>\n    grader.addBasicPart('4.3.1.2', lambda : grader.requireIsEqual(np.array([-0.0620051,\
-    \ -0.0620051]), submission.logisticGradient(theta,fv2, 1)),4)\n"
-  - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment6/hw6/image_classification/submission.py\"\
-    , line 109, in logisticGradient\n    raise Exception(\"Not yet implemented.\"\
-    )\n"
+  messages: []
   name: 4.3.1.2
-  points: 0
+  points: 4
   seconds: 0
 - maxPoints: 3
   maxSeconds: 1
-  messages:
-  - 'Exception thrown: <class ''Exception''> -- Not yet implemented.'
-  - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment6/hw6/image_classification/grader.py\"\
-    , line 52, in <lambda>\n    grader.addBasicPart('4.3.1.3', lambda : grader.requireIsEqual(np.array([0.1379949,\
-    \ 0.1379949]), submission.logisticGradient(theta,fv2, 0)),3)\n"
-  - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment6/hw6/image_classification/submission.py\"\
-    , line 109, in logisticGradient\n    raise Exception(\"Not yet implemented.\"\
-    )\n"
+  messages: []
   name: 4.3.1.3
-  points: 0
+  points: 3
   seconds: 0
 - maxPoints: 3
   maxSeconds: 1
-  messages:
-  - 'Exception thrown: <class ''Exception''> -- Not yet implemented.'
-  - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment6/hw6/image_classification/grader.py\"\
-    , line 59, in <lambda>\n    grader.addBasicPart('4.3.2.1', lambda : grader.requireIsEqual(np.array([0.,0.]),\
-    \ submission.hingeLossGradient(theta,fv1, 1)),3)\n"
-  - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment6/hw6/image_classification/submission.py\"\
-    , line 129, in hingeLossGradient\n    raise Exception(\"Not yet implemented.\"\
-    )\n"
+  messages: []
   name: 4.3.2.1
-  points: 0
+  points: 3
   seconds: 0
 - maxPoints: 4
   maxSeconds: 1
-  messages:
-  - 'Exception thrown: <class ''Exception''> -- Not yet implemented.'
-  - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment6/hw6/image_classification/grader.py\"\
-    , line 60, in <lambda>\n    grader.addBasicPart('4.3.2.2', lambda : grader.requireIsEqual(-fv2,\
-    \ submission.hingeLossGradient(theta,fv2, 1)),4)\n"
-  - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment6/hw6/image_classification/submission.py\"\
-    , line 129, in hingeLossGradient\n    raise Exception(\"Not yet implemented.\"\
-    )\n"
+  messages: []
   name: 4.3.2.2
-  points: 0
+  points: 4
   seconds: 0
 - maxPoints: 3
   maxSeconds: 1
-  messages:
-  - 'Exception thrown: <class ''Exception''> -- Not yet implemented.'
-  - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment6/hw6/image_classification/grader.py\"\
-    , line 61, in <lambda>\n    grader.addBasicPart('4.3.2.3', lambda : grader.requireIsEqual(fv2,\
-    \ submission.hingeLossGradient(theta,fv2, 0)),3)\n"
-  - "  File \"/Users/mikey/Library/Mobile Documents/com~apple~CloudDocs/Documents/Rice/Courses/COMP557-AI/COMP557-Assignments/assignment6/hw6/image_classification/submission.py\"\
-    , line 129, in hingeLossGradient\n    raise Exception(\"Not yet implemented.\"\
-    )\n"
+  messages: []
   name: 4.3.2.3
-  points: 0
+  points: 3
   seconds: 0
-totalPoints: 20
+totalPoints: 40

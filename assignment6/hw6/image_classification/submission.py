@@ -118,7 +118,7 @@ def logisticGradient(theta, featureVector, y):
 ############################################################
 # Problem 4.3.2
     
-def hingeLossGradient(theta,featureVector,y):
+def hingeLossGradient(theta, featureVector, y):
     """
     Calculates and returns gradient of hinge loss function with
     respect to parameter vector theta.
@@ -132,7 +132,14 @@ def hingeLossGradient(theta,featureVector,y):
       1D numpy array of gradient of hinge loss w.r.t. to theta
     """
     # BEGIN_YOUR_CODE (around 6 lines of code expected)
-
+    yy = 2*y - 1
+    grad = np.zeros(len(theta))
+    for i in range(len(theta)):
+        if 1 - np.dot(theta, featureVector*yy) > 0:
+            grad[i] = -featureVector[i] * yy
+        else:
+            grad[i] = 0.0
     # raise Exception("Not yet implemented.")
+    return grad
     # END_YOUR_CODE
 
