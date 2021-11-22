@@ -239,7 +239,6 @@ class OneVsAllClassifier(MultiClassClassifier):
         for label in self.classifiers.keys():
             score = self.classifiers[label].classify(x)
             label_score.append((label, score))
-            print(f"label = {label} & score = {score}")
         return label_score
         # raise NotImplementedError("TODO:")
         # END_YOUR_CODE
@@ -256,6 +255,20 @@ def learnOneVsAllClassifiers( trainExamples, featureFunction, labels, perClassif
     @return list (label, Classifier)
     """
     # BEGIN_YOUR_CODE (around 10 lines of code expected)
-    raise NotImplementedError("TODO:")       
+    # labels => ('comp', 'rec', 'talk', 'god', 'sci')
+    # For each label => transform it into 'pos' or 'neg'
+    binary_labels = ('pos', 'neg')
+    ret = []
+    for label_i in labels:
+        trainExamplesMod = []
+        for text, label in trainExamples:
+            if label == label_i:        # if label is 'comp' -> 'pos' else 'neg'
+                trainExamplesMod.append((text, 'pos'))
+            else:
+                trainExamplesMod.append((text, 'neg'))
+        ret.append((label_i, WeightedClassifier(binary_labels, featureFunction, learnWeightsFromPerceptron(trainExamplesMod, featureFunction, binary_labels, perClassifierIters))))
+    return ret
+
+    # raise NotImplementedError("TODO:")
     # END_YOUR_CODE
 
