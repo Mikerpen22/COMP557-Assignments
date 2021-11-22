@@ -1,6 +1,5 @@
 import collections
 import numpy as np
-
 ############################################################
 # Problem 4.1
 
@@ -24,7 +23,28 @@ def runKMeans(k,patches,maxIter):
 
     for i in range(maxIter):
         # BEGIN_YOUR_CODE (around 19 lines of code expected)
-        raise Exception("Not yet implemented")
+        # Assignment step:
+        z = np.zeros(numPatches, dtype=np.int)
+
+        # Assignment
+        for patch_i in range(numPatches):
+            dist_to_centroids = np.zeros((k, ))
+            for centroid_k in range(k):
+                dist_to_centroids[centroid_k] = np.linalg.norm(patches.T[patch_i] - centroids.T[centroid_k])
+            z[patch_i] = np.argmin(dist_to_centroids)
+
+
+        # Update step:
+        centroids_t = centroids.T       # Easier to index
+        patches_t = patches.T
+        for j in range(k):
+            indices = np.where(z == j)[0]   # index to find points in patch with same centroid
+            patch_same_centroid = patches_t[indices]
+            centroids_t[j] = np.mean(patch_same_centroid, axis=0)
+        centroids = centroids_t.T
+
+
+        # raise Exception("Not yet implemented")
         # END_YOUR_CODE
 
     return centroids
